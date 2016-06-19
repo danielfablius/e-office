@@ -1,0 +1,173 @@
+{
+  "results": [
+    {
+    	"level_jabatan": "2",
+    	"nama_jabatan": "Sekretaris Dinas",
+    	"pengguna": [
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "Dr. Drs. Kardenal, M.Si",
+    			"jabatan": "Sekretaris Dinas"
+    		}
+    	]
+    },
+    {
+    	"level_jabatan": "3",
+    	"nama_jabatan": "Kepala Sub Bagian",
+    	"pengguna": [
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "Dede Hartini, S.E, M.Si",
+    			"jabatan": "Kasubag Program dan Pelaporan"
+    		},
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "H. Rudi Fahrudin, SE",
+    			"jabatan": "Kabid Umum dan Kepegawaian"
+    		},
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "Iwan Setiawan, S.Sos",
+    			"jabatan": "Kasubag Keuangan"
+    		}
+    	]
+    },
+    {
+    	"level_jabatan": "3",
+    	"nama_jabatan": "UPT Radio & TV",
+    	"pengguna": [
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "H. Muharom, S.Sos, M.A.P.",
+    			"jabatan": "Kepala UPT Radio & TV"
+    		}
+    	]
+    },
+    {
+    	"level_jabatan": "3",
+    	"nama_jabatan": "Kepala Bidang",
+    	"pengguna": [
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "Dra. Betty Sugiarti",
+    			"jabatan": "Kabid Telematika"
+    		},
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "Dra. Hj. Ernaningsih, M.Si",
+    			"jabatan": "Kabid Teknologi Informasi"
+    		},
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "Moh. Dadang Iwa S.,S.Sos,M.Si",
+    			"jabatan": "Kabid Komunikasi dan Informasi Publik"
+    		}
+    	]
+    },
+    {
+    	"level_jabatan": "4",
+    	"nama_jabatan": "Bidang Telematika",
+    	"pengguna": [
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "Dini Saumi Imaniah, S.S",
+    			"jabatan": "Kasi Pos dan Telekomunikasi"
+    		},
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "Christian P. Messakh, S.Sos",
+    			"jabatan": "Kasi Pengelolaan Jaringan dan Komunikasi Data"
+    		},
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "Drs. Eko Sumatoyo",
+    			"jabatan": "Kasi Standarisasi dan Audit"
+    		}
+    	]
+    },
+    {
+    	"level_jabatan": "4",
+    	"nama_jabatan": "Bidang Teknologi Informasi",
+    	"pengguna": [
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "Dendi Wahyudin, S.IP",
+    			"jabatan": "Kasi Operasionalisasi Sistem Informasi"
+    		},
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "Suzy Susana, SS",
+    			"jabatan": "Kasi Pengembangan Perangkat Lunak"
+    		},
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "Marjati, S.P, M.T",
+    			"jabatan": "Kasi Pengembangan Situs Web Pemerintahan Daerah"
+    		}
+    	]
+    },
+    {
+    	"level_jabatan": "4",
+    	"nama_jabatan": "Bidang Komunikasi dan Informasi Publik",
+    	"pengguna": [
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "Purnama Karnadi, S.E.",
+    			"jabatan": "Kasi Pelayanan Informasi"
+    		},
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "Dede Kosasih, SE, M.Si",
+    			"jabatan": "Kasi Pemberdayaan Media Massa"
+    		},
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "Mimin Sumirat, S.E, M.Si",
+    			"jabatan": "Kasi Hubungan Kelembagaan"
+    		}
+    	]
+    },
+    {
+    	"level_jabatan": "5",
+    	"nama_jabatan": "Seksi Pos dan Telekomunikasi",
+    	"pengguna": [
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "ALFLJALA ",
+    			"jabatan": "Staff Pos dan Telekomunikasi"
+    		}
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "ALFLJALA ",
+    			"jabatan": "Staff Pos dan Telekomunikasi"
+    		},
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "ALFLJALA ",
+    			"jabatan": "Staff Pos dan Telekomunikasi"
+    		}
+    	]
+    },
+    {
+    	"level_jabatan": "5",
+    	"nama_jabatan": "Seksi Pengelolaan Jaringan dan Komunikasi Data", <-- Dibuat semua, tiap seksinya sama tiap sub bagiannya, biar semua user dapet (kecuali admin)
+    	"pengguna": [
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "ALFLJALA ",
+    			"jabatan": "Staff Pengelolaan Jaringan dan Komunikasi Data"
+    		}
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "ALFLJALA ",
+    			"jabatan": "Staff Pengelolaan Jaringan dan Komunikasi Data"
+    		},
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "ALFLJALA ",
+    			"jabatan": "Staff Pengelolaan Jaringan dan Komunikasi Data"
+    		}
+    	]
+    },
+  ]
+}

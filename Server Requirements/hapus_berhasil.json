@@ -1,0 +1,6 @@
+{
+  "results": {
+    "success": true,
+    "message": "Berhasil menghapus data {nama collectionnya} dengan id {objectIDnya}"
+  }
+}

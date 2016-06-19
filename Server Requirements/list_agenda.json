@@ -1,0 +1,52 @@
+{
+    "results": [
+	    {
+	    	"ObjectId": "id_agendanya",
+			"no_surat" : "no_surat",
+			"no_agenda" : "no_agenda",
+			"tanggal_surat" : "new Date(tanggal_surat)",
+			"tanggal_diterima" : "new Date(tanggal_diterima)",
+			"pengirim" : "pengirim",
+			"perihal" : "perihal",
+			"penerima" : "penerima",
+			"jenis_surat" : "jenis_surat",
+			"lampiran" : "http://path ke lampiran",
+			"status" : "(1) Status Surat",
+			"is_delete" : 0
+	    },
+	    {
+	    	"ObjectId": "id_agendanya",
+			"no_surat" : "no_surat",
+			"no_agenda" : "no_agenda",
+			"tanggal_surat" : "new Date(tanggal_surat)",
+			"tanggal_diterima" : "new Date(tanggal_diterima)",
+			"pengirim" : "pengirim",
+			"perihal" : "perihal",
+			"penerima" : "penerima",
+			"jenis_surat" : "jenis_surat",
+			"lampiran" : "http://path ke lampiran",
+			"status" : "(1) Status Surat",
+			"is_delete" : 0
+	    },
+	    {
+	    	"ObjectId": "id_agendanya",
+			"no_surat" : "no_surat",
+			"no_agenda" : "no_agenda",
+			"tanggal_surat" : "new Date(tanggal_surat)",
+			"tanggal_diterima" : "new Date(tanggal_diterima)",
+			"pengirim" : "pengirim",
+			"perihal" : "perihal",
+			"penerima" : "penerima",
+			"jenis_surat" : "jenis_surat",
+			"lampiran" : "http://path ke lampiran",
+			"status" : "(1) Status Surat",
+			"is_delete" : 0
+	    },
+	]
+}
+
+
+(1) => "Status Surat"
+- "Belum dibaca" -> Pertama kali insert
+- "Sudah dibaca" -> Ketika klik disposisi
+- "Ditolak" -> Ketika klik tolak (?) biar surat yang ga perlu ditanggapi ga muncul terus di surat masuk kadis

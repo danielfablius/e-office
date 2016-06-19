@@ -1,0 +1,108 @@
+tabel
+-----------------------
+1. User
+2. Jabatan
+3. Surat
+4. KartuDisposisi/Disposisi
+::::::::::::::::::::::::
+
+Sample
+------------------------------
+>db.mycol.insert({
+   _id: ObjectId(7df78ad8902c),
+   title: 'MongoDB Overview', 
+   description: 'MongoDB is no sql database',
+   by: 'tutorials point',
+   url: 'http://www.tutorialspoint.com',
+   tags: ['mongodb', 'database', 'NoSQL'],
+   likes: 100
+})
+
+Record
+------------------------------
+1 Jabatan
+------------------------------
+id (auto generate)
+-nama_jabatan
+-level_jabatan
+-parentid(id jabatan atas nya, e.g : id jabatan kabid IT = 2
+				     parentid jabatan kasi ppl = 2)
+--------------------
+User
+--------------------
+id(auto generate)
+username
+password
+nama
+id_jabatan
+no_telp
+email
+id_disposisi_masuk
+id_disposisi_keluar
+created at (blakangan aja)
+udpated at (blakangan aja)
+deleted at (blakangan aja)
+
+---------------------
+Agenda/Surat (nama tabelnya agenda aja)
+---------------------
+id(auto_generate)
+-tanggal_surat
+-tanggal_diterima
+-pengirim
+-no_surat
+-no_agenda
+-perihal
+-penerima(surat ditujukkan kepada)
+-jenis_surat
+-lampiran (scanned)	
+-status => sudah ditanggapi/belum
+-is_delete
+
+---------------------
+Disposisi
+---------------------
+id(auro generate)
+id_agenda/surat
+instruksi_kepada (Kadis)
+isi_instruksi (Kadis)
+?tanggal_instruksi 
+diteruskan_kepada (sesdin)
+isi_disposisi (sesdin)
+?tanggal_disposisi
+instruksi_tambahan
+status => status :waktu, PIC (blakangan aja)  
+tanggal_penyelesaian (deadline)
+
+
+CONNECT TO MONGODB: 
+(32bit) mongod --dbpath D:\DANIEL\KP\E-office\data --storageEngine=mmapv1
+
+Collection
+Users :
+----------------
+Documents:
+_id: 1,
+username: 'danielf',
+password: 'pass',
+nama: 'daniel fablius',
+id_jabatan: 1,
+no_telp: '081283167704',
+email: 'danielfablius@gmail.com'
+
+
+
+Agenda
+---------------
+Documents:
+"no_surat" : "D05/368-Bintal Kerohanian",
+"no_agenda" : "1",
+"tanggal_surat" : ISODate('2016-06-01'),
+"tanggal_diterima" : ISODate('2016-06-02'),
+"pengirim" : "Bupati Bogor",
+"perihal" : "Peringatan Maulid Nabi",
+"penerima" : "Kepala Dinas Diskominfo",
+"jenis_surat" : "Undangan",
+"lampiran" : '',
+"status" : '',
+"is_delete" : "false"

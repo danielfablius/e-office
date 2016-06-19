@@ -1,0 +1,51 @@
+{
+  "results": {
+    "success": true,
+    "data": {
+    	"ObjectId": "id_disposisi",
+		"no_surat" : "no_surat yang didisposisikan",
+		"tanggal_surat" : "tanggal surat yang didisposisikan",
+        "tanggal_instruksi" : "tanggal_instruksi",
+		"instruksi_kepada" : [
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "Dede Hartini, S.E, M.Si",
+    			"jabatan": "Sekretaris Dinas"
+    		}
+		],
+		"isi_instruksi" : "isi_instruksi",
+		"diteruskan_kepada" : [
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "Dede Hartini, S.E, M.Si",
+    			"jabatan": "Kasubag Program dan Pelaporan"
+    		},
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "H. Rudi Fahrudin, SE",
+    			"jabatan": "Kabid Umum dan Kepegawaian"
+    		},
+    		{
+    			"ObjectId": "SKDAKJSDHAAKS",
+    			"nama": "Iwan Setiawan, S.Sos",
+    			"jabatan": "Kasubag Keuangan"
+    		}
+		],
+		"isi_disposisi" : "isi_disposisi",
+		"tanggal_disposisi" : "tanggal_disposisi",
+		"status" : [
+    		{
+    			"PIC": "SKDAKJSDHAAKS",
+    			"status": "Belum dibaca/Sudah dibaca",
+    			"waktu": "waktu dibaca"
+    		},
+    		{
+    			"PIC": "SKDAKJSDHAAKS",
+    			"status": "Belm dibaca/Sudah dibaca",
+    			"waktu": "waktu dibaca"
+    		}
+		],
+		"tanggal_penyelesaian" : "tanggal penyelesaian"
+    }
+  }
+}

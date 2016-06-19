@@ -1,0 +1,28 @@
+{
+  "results": [
+    {
+    	"ObjectId": "id_jabatan",
+    	"nama_jabatan": "nama_jabatannya",
+    	"level_jabatan": "level_jabatannya",
+    	"parent_id": "ObjectId parentnya"
+    },
+    {
+    	"ObjectId": "id_jabatan",
+		"nama_jabatan": "nama_jabatannya",
+		"level_jabatan": "level_jabatannya",
+		"parent_id": "ObjectId parentnya"
+    },
+    {
+    	"ObjectId": "id_jabatan",
+		"nama_jabatan": "nama_jabatannya",
+		"level_jabatan": "level_jabatannya",
+		"parent_id": "ObjectId parentnya"
+    },
+    {
+    	"ObjectId": "id_jabatan",
+		"nama_jabatan": "nama_jabatannya",
+		"level_jabatan": "level_jabatannya",
+		"parent_id": "ObjectId parentnya"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "results": {
+    "success": false,
+    "message": "Gagal mengubah data {nama collectionnya} dengan id {objectIDnya}, {Errornya karena apa}"
+  }
+}

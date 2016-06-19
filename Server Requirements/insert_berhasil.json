@@ -1,0 +1,6 @@
+{
+  "results": {
+    "success": true,
+    "message": "Data {nama collection} - {deskripsi collection, misalnya nama jabatan} berhasil ditambahkan"
+  }
+}

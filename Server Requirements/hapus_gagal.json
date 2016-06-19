@@ -1,0 +1,6 @@
+{
+  "results": {
+    "success": false,
+    "message": "Gagal menghapus data {nama collectionnya} dengan id {objectIDnya}, {Errornya karena apa}"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "results": {
+    "success": false,
+    "message": "Gagal menambahkan data {nama collectionnya}, {Errornya karena apa}"
+  }
+}

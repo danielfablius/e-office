@@ -1,0 +1,9 @@
+{
+  "results": {
+    "success": true,
+    "user_id": "ID_USERnya", <-- objectIDnya
+    "jabatan": "ID_JABATANnya",  <-- objectIDnya
+    "token": "TOKENNYA", <-- kayanya sih bisa pake JWT, tapi blm tau cara pakainya gimana
+    "message": "Login berhasil"
+  }
+}

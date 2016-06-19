@@ -1,0 +1,11 @@
+{
+  "results": {
+    "success": true,
+    "data": {
+    	"ObjectId": "id_jabatannya",
+    	"nama_jabatan": "nama_jabatannya",
+    	"level_jabatan": "level_jabatannya",
+    	"parent_id": "ObjectId parentnya"
+    }
+  }
+}

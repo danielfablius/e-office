@@ -1,0 +1,6 @@
+{
+  "results": {
+    "success": false,
+    "message": "Data {collection name} dengan ObjectID {ObjectID} tidak ditemukan"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "results": {
+    "success": true,
+    "data": {
+    	"ObjectId": "id_pengguna",
+    	"username": "username",
+    	"nama": "nama",
+    	"id_jabatan": "ObjectId jabatan",
+        "no_telp": "no_telp",
+        "email": "email",
+        "createdAt": "createdAt",
+        "updatedAt": "updatedAt",
+        "detail_jabatan" : {
+            "ObjectId": "id_jabatannya",
+            "nama_jabatan": "nama_jabatannya",
+            "level_jabatan": "level_jabatannya",
+            "parent_id": "ObjectId parentnya"
+        }
+    }
+  }
+}

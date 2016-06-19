@@ -1,0 +1,152 @@
+ACCESS ROLE :
+- Admin
+-- Kelola Pengguna
+-- Kelola Jabatan
+
+- Tata Usaha
+-- Kelola Agenda
+
+- Kepala Dinas
+-- Surat Masuk (dan buat disposisi)
+-- Disposisi Keluar
+
+- Sekretaris Dinas
+-- Surat Masuk
+-- Disposisi Masuk (dan teruskan disposisi pada kolom sesdin)
+-- Disposisi keluar
+
+- Kepala Bidang
+-- Surat Masuk (view)
+-- Disposisi Masuk (dan teruskan disposisi pada instruksi tambahan)
+-- Disposisi keluar
+
+- Kepala Sie
+-- Surat Masuk (view)
+-- Disposisi Masuk (dan teruskan disposisi pada instruksi tambahan)
+-- Disposisi keluar
+
+- Kasubag
+-- Surat Masuk (view)
+-- Disposisi Masuk (dan teruskan disposisi pada instruksi tambahan)
+-- Disposisi keluar
+
+
+FITUR :
+- Login
+-- Method : POST
+-- URL : /login, 
+-- nama input yang dikirim : 
+--- username
+--- password
+-- respon yang diberikan :
+--- tipe data : JSON
+--- isi data jika berhasil : login_berhasil.json
+--- isi data jika gagal : login_gagal.json
+-- Expected action from server :
+--- Memproses token/session, sehingga tidak semua orang bisa mengakses data API (butuh melakukan login dulu/punya token, baru bisa akses)
+--- privileges/security
+
+
+- Agenda
+-- List Agenda
+
+-- Tambah Agenda
+
+-- Update Agenda
+
+-- Delete Agenda
+
+
+- Surat Masuk
+-- List Surat Masuk
+
+-- Buat Disposisi
+
+
+- Disposisi Masuk
+-- Lihat Disposisi Masuk
+
+-- Teruskan Disposisi
+
+
+- Disposisi Keluar
+-- Lihat Disposisi Keluar
+
+- Kelola Pengguna
+-- Tambah Pengguna
+
+-- Update Pengguna
+
+-- Hapus Pengguna
+
+
+- Kelola Jabatan
+-- List Jabatan
+--- Method : GET
+--- URL : /jabatan, 
+--- nama input yang dikirim : -
+--- respon yang diberikan :
+---- tipe data : JSON
+---- isi data : list_jabatan.json
+--- Expected action from server :
+---- Menampilkan list jabatan sort by level jabatan
+
+-- List Jabatan (Tree)
+--- Method : GET
+--- URL : /jabatan_tree, 
+--- nama input yang dikirim : -
+--- respon yang diberikan :
+---- tipe data : JSON
+---- isi data : list_jabatan_tree.json
+--- Expected action from server :
+---- Menampilkan list jabatan dalam bentuk tree menggunakan JSON
+
+-- Detail Jabatan
+--- Method : GET
+--- URL : /jabatan/:id, 
+--- nama input yang dikirim : -
+--- respon yang diberikan :
+---- tipe data : JSON
+---- isi data jika berhasil : detail_jabatan.json
+---- isi data jika gagal : gagal_detail.json
+--- Expected action from server :
+---- tertera diatas
+
+-- Tambah Jabatan
+--- Method : POST
+--- URL : /jabatan, 
+--- nama input yang dikirim : 
+---- nama_jabatan
+---- level_jabatan
+---- parent_id
+--- respon yang diberikan :
+---- tipe data : JSON
+---- isi data jika berhasil : insert_berhasil.json
+---- isi data jika gagal : insert_gagal.json
+--- Expected action from server :
+---- Data yang ditambahkan dapat ditampilkan di List Jabatan
+
+-- Update Jabatan
+--- Method : PUT
+--- URL : /jabatan/:id_jabatan, 
+--- nama input yang dikirim : 
+---- nama_jabatan
+---- level_jabatan
+---- parent_id
+--- respon yang diberikan :
+---- tipe data : JSON
+---- isi data jika berhasil : update_berhasil.json
+---- isi data jika  gagal : update_gagal.json
+--- Expected action from server :
+---- Update data sesuai dengan data yang dikirimkan, jika salah satu input tidak ada, tidak perlu diupdate
+
+-- Hapus Jabatan
+--- Method : DELETE
+--- URL : /jabatan/:id_jabatan, 
+--- nama input yang dikirim : -
+--- respon yang diberikan :
+---- tipe data : JSON
+---- isi data jika berhasil : hapus_berhasil.json
+---- isi data jika gagal : hapus_gagal.json
+--- Expected action from server :
+---- Mengubah data is_delete menjadi 1, lalu data tidak ditampilkan pada setiap kali di SELECT/GET datanya
