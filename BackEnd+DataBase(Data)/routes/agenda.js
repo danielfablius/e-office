@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
 			res.json({
 				"results": {
 	    			"success": false,
-	    			"message": "Data {collection name} dengan ObjectID {ObjectID} tidak ditemukan"
+	    			"message": "Data Agenda tidak ditemukan"
   				}
 			});
 		}
@@ -58,10 +58,20 @@ router.post('/', function(req, res) {
 		"is_delete" : is_delete
 	}, function (err, doc) {
 		if (err) {
-			res.json({message: 'insert failed'});
+			res.json({
+			  "results": {
+			    "success": false,
+			    "message": "Gagal menambahkan data agenda,"+ err
+			  }
+			});
 		}
 		else {
-			res.json({message: 'insert success'});
+			res.json({
+			  "results": {
+			    "success": true,
+			    "message": "Data agenda berhasil ditambahkan"
+			  }
+			});
 		}
 	});
 });
@@ -71,8 +81,23 @@ router.get('/:agenda_id', function(req, res, next) {
   	var db = req.db;
   	var collection = db.get('agenda');
   	collection.findById(req.params.agenda_id, function(err,docs){
-  		res.json({"agenda" : docs});
-  });  
+  		if (err) {
+			res.json({
+				"results": {
+	    			"success": false,
+	    			"message": "Data Agenda dengan ObjectID" + req.params.agenda_id +"  tidak ditemukan"
+  				}
+			});
+		}
+		else {
+			res.json({
+		 	 	"results": {
+					"success": true,
+					"data": docs
+		  		}
+			});
+		}
+  	});  
 });
 
 //update agenda by ID Done?Status dan Lampiran
@@ -107,10 +132,20 @@ router.put('/:agenda_id', function(req, res, next) {
 		"is_delete" : is_delete
 	}, function (err, doc) {
 		if (err) {
-			res.json({message: 'update failed'});
+			res.json({
+			  "results": {
+			    "success": false,
+			    "message": "Gagal mengubah data Agenda dengan id"+ req.params.agenda_id +","+ err
+			  }
+			});
 		}
 		else {
-			res.json({message: 'update success'});
+			res.json({
+			  "results": {
+			    "success": true,
+			    "message": "Data agenda berhasil diubah"
+			  }
+			});
 		}
 	});
 });
@@ -126,12 +161,22 @@ router.delete('/:agenda_id', function(req, res ,next) {
   	{$set:{"is_delete" : is_delete}}, 
   	function(err,docs){
   		if (err) {
-			res.json({message: 'delete failed'});
+			res.json({
+			  "results": {
+			    "success": false,
+			    "message": "Gagal menghapus data Agenda dengan id"+ req.params.agenda_id +","+ err
+			  }
+			});
 		}
 		else {
-			res.json({message: 'delete success'});
+			res.json({
+			  "results": {
+			    "success": true,
+			    "message": "Berhasil menghapus data Agenda dengan id"+req.params.agenda_id
+			  }
+			});
 		}
-  });  
+  	});  
 });
 
 
