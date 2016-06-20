@@ -8,6 +8,7 @@ ACCESS ROLE :
 
 - Kepala Dinas
 -- Surat Masuk (dan buat disposisi)
+-- Surat yang diproses
 -- Disposisi Keluar
 
 - Sekretaris Dinas
@@ -45,39 +46,8 @@ FITUR :
 -- Expected action from server :
 --- Memproses token/session, sehingga tidak semua orang bisa mengakses data API (butuh melakukan login dulu/punya token, baru bisa akses)
 --- privileges/security
+--- (BARU) Jangan lupa password yang dikirim dienkripsi dulu, baru di cek sama atau enggak dengan yang ada di db
 
-
-- Agenda
--- List Agenda
-
--- Tambah Agenda
-
--- Update Agenda
-
--- Delete Agenda
-
-
-- Surat Masuk
--- List Surat Masuk
-
--- Buat Disposisi
-
-
-- Disposisi Masuk
--- Lihat Disposisi Masuk
-
--- Teruskan Disposisi
-
-
-- Disposisi Keluar
--- Lihat Disposisi Keluar
-
-- Kelola Pengguna
--- Tambah Pengguna
-
--- Update Pengguna
-
--- Hapus Pengguna
 
 
 - Kelola Jabatan
@@ -100,6 +70,7 @@ FITUR :
 ---- isi data : list_jabatan_tree.json
 --- Expected action from server :
 ---- Menampilkan list jabatan dalam bentuk tree menggunakan JSON
+---- yang soft deletenya 1 tidak perlu ditampilkan
 
 -- Detail Jabatan
 --- Method : GET
@@ -111,6 +82,7 @@ FITUR :
 ---- isi data jika gagal : gagal_detail.json
 --- Expected action from server :
 ---- tertera diatas
+---- yang soft deletenya 1 tidak perlu ditampilkan
 
 -- Tambah Jabatan
 --- Method : POST
@@ -150,3 +122,288 @@ FITUR :
 ---- isi data jika gagal : hapus_gagal.json
 --- Expected action from server :
 ---- Mengubah data is_delete menjadi 1, lalu data tidak ditampilkan pada setiap kali di SELECT/GET datanya
+
+
+
+- Kelola Pengguna
+-- List Pengguna
+--- Method : GET
+--- URL : /pengguna,
+--- nama input yang dikirim : -
+--- respon yang diberikan :
+---- tipe data : JSON
+---- isi data jika berhasil : list_pengguna.json
+--- Expected action from server :
+---- tertera diatas
+---- yang soft deletenya 1 tidak perlu ditampilkan
+
+-- Detail Pengguna
+--- Method : GET
+--- URL : /pengguna/:id_pengguna, 
+--- nama input yang dikirim : -
+--- respon yang diberikan :
+---- tipe data : JSON
+---- isi data jika berhasil : detail_pengguna.json
+---- isi data jika gagal : gagal_detail.json
+--- Expected action from server :
+---- tertera diatas
+---- yang soft deletenya 1 tidak perlu ditampilkan
+
+-- Tambah Pengguna
+--- Method : POST
+--- URL : /pengguna, 
+--- nama input yang dikirim : 
+---- username
+---- password
+---- nama
+---- id_jabatan
+---- no_telp
+---- email
+--- respon yang diberikan :
+---- tipe data : JSON
+---- isi data jika berhasil : insert_berhasil.json
+---- isi data jika gagal : insert_gagal.json
+--- Expected action from server :
+---- Data yang ditambahkan dapat ditampilkan di List Pengguna
+---- user yang telah terdaftar dapat login
+---- password di enkripsi terlebih dahulu sebelum masuk ke database
+
+-- Update Pengguna
+--- Method : PUT
+--- URL : /pengguna/:id_pengguna, 
+--- nama input yang dikirim : 
+---- username
+---- password
+---- nama
+---- id_jabatan
+---- no_telp
+---- email
+--- respon yang diberikan :
+---- tipe data : JSON
+---- isi data jika berhasil : update_berhasil.json
+---- isi data jika  gagal : update_gagal.json
+--- Expected action from server :
+---- Jika password dikosongkan, berarti password tidak berubah
+---- jika password terisi, enkripsi terlebih dahulu passwordnya
+---- username tidak boleh sama dengan yang lain, jika sama kasih error.
+
+-- Delete Pengguna
+--- Method : DELETE
+--- URL : /pengguna/:id_pengguna, 
+--- nama input yang dikirim : -
+--- respon yang diberikan :
+---- tipe data : JSON
+---- isi data jika berhasil : hapus_berhasil.json
+---- isi data jika gagal : hapus_gagal.json
+--- Expected action from server :
+---- Mengubah data is_delete menjadi 1, lalu data tidak ditampilkan pada setiap kali di SELECT/GET datanya
+
+
+
+- Agenda
+-- List Agenda
+--- Method : GET
+--- URL : /agenda,
+--- nama input yang dikirim : -
+--- respon yang diberikan :
+---- tipe data : JSON
+---- isi data jika berhasil : list_agenda.json
+--- Expected action from server :
+---- tertera diatas
+---- yang soft deletenya 1 tidak perlu ditampilkan
+
+-- Detail Agenda
+--- Method : GET
+--- URL : /agenda/:id_agenda, 
+--- nama input yang dikirim : -
+--- respon yang diberikan :
+---- tipe data : JSON
+---- isi data jika berhasil : detail_agenda.json
+---- isi data jika gagal : gagal_detail.json
+--- Expected action from server :
+---- tertera diatas
+---- yang soft deletenya 1 tidak perlu ditampilkan
+
+-- Tambah Agenda
+--- Method : POST
+--- URL : /agenda, 
+--- nama input yang dikirim : 
+---- no_surat
+---- no_agenda
+---- tanggal_surat
+---- tanggal_diterima
+---- pengirim
+---- perihal
+---- penerima
+---- jenis_surat
+---- lampiran (?)
+--- respon yang diberikan :
+---- tipe data : JSON
+---- isi data jika berhasil : insert_berhasil.json
+---- isi data jika gagal : insert_gagal.json
+--- Expected action from server :
+---- Data yang ditambahkan dapat ditampilkan di List Agenda
+---- Notifikasi masuk ke Kepala Dinas bahwa ada surat masuk yang baru (optional) (di platform mobile dan web)
+---- Lampiran diupload di server dan menyimpan "path" untuk mengakses file tersebut (File mungkin berupa PDF atau gambar ???)
+----- Note : Kalau di internet ada cara lebih baik, pakai yg itu aja. wkwk.
+---- status secara default "belum dibaca"
+
+-- Update Agenda
+--- Method : PUT
+--- URL : /agenda/:id_agenda, 
+--- nama input yang dikirim : 
+---- no_surat
+---- no_agenda
+---- tanggal_surat
+---- tanggal_diterima
+---- pengirim
+---- perihal
+---- penerima
+---- jenis_surat
+---- lampiran (?)
+--- respon yang diberikan :
+---- tipe data : JSON
+---- isi data jika berhasil : update_berhasil.json
+---- isi data jika  gagal : update_gagal.json
+--- Expected action from server :
+---- Update data sesuai dengan data yang dikirimkan, jika salah satu input tidak ada, tidak perlu diupdate
+---- Lampiran yang sudah ada dihapus, diganti dengan lampiran yang baru diupload
+---- status tidak diganti lewat fitur update agenda, tetapi pada disposisi
+
+-- Delete Agenda
+--- Method : DELETE
+--- URL : /agenda/:id_agenda, 
+--- nama input yang dikirim : -
+--- respon yang diberikan :
+---- tipe data : JSON
+---- isi data jika berhasil : hapus_berhasil.json
+---- isi data jika gagal : hapus_gagal.json
+--- Expected action from server :
+---- Mengubah data is_delete menjadi 1, lalu data tidak ditampilkan pada setiap kali di SELECT/GET datanya
+
+
+- Surat Masuk
+-- List Surat Masuk
+--- Method : GET
+--- URL : /suratmasuk,
+--- nama input yang dikirim : -
+--- respon yang diberikan :
+---- tipe data : JSON
+---- isi data jika berhasil : list_agenda.json
+--- Expected action from server :
+---- tertera diatas
+---- yang soft deletenya 1 tidak perlu ditampilkan
+---- hanya menampilkan surat yang statusnya belum dibaca 
+---- URL lampiran jangan lupa ditaro
+
+-- Tolak (?)
+--- Method : POST
+--- URL : /suratmasuk/tolak,
+--- nama input yang dikirim : -
+--- respon yang diberikan :
+---- tipe data : JSON
+---- isi data jika berhasil : hapus_berhasil.json
+--- Expected action from server :
+---- tertera diatas
+---- bedanya is_deletenya ga diganti, tapi statusnya aja ganti ditolak. biar ga nampil terus di surat masuk kalo emg gamau didisposisikan
+---- isi messagenya menyesuaikan
+
+-- Buat Disposisi
+--- Method : POST
+--- URL : /suratmasuk/buat_disposisi,
+--- nama input yang dikirim :  Contohnya "buat_disposisi.json"
+---- instruksi_kepada (berupa STRING dengan pemisah koma(,) )
+---- isi_instruksi
+---- tanggal_instruksi
+---- tanggal_penyelesaian
+--- respon yang diberikan :
+---- tipe data : JSON
+---- isi data jika berhasil : berhasil_disposisi.json
+--- Expected action from server :
+---- tertera diatas
+---- tanggal instruksi masuk secara otomatis pada hari ini (jika tidak ada isinya)
+---- Notifikasi masuk ke User yang bersangkutan bahwa ada disposisi (optional) (di platform mobile dan web)
+---- Pada user yang diisi di "instruksi_kepada", "id_disposisi" masuk ke "id_disposisi_masuk"
+---- Pada kadis, "id_disposisi" masuk ke id_disposisi keluar
+
+-- List Pengguna Tree
+--- Method : GET
+--- URL : /pengguna_tree/:id_jabatan
+--- nama input yang dikirim : -
+--- respon yang diberikan :
+---- tipe data : JSON
+---- isi data jika berhasil : list_pengguna_tree.json
+--- Expected action from server :
+---- menampilkan data sesuai dengan contoh json
+---- Data yang ditampilkan sesuai dengan anggota dari ID jabatan yang tertera, misal kadis bisa melihat semua anggota, sedangkan kasi hanya bisa anggotanya saja
+
+
+- Disposisi Masuk
+-- Lihat Disposisi Masuk
+--- Method : GET
+--- URL : /disposisi/masuk/:id_pengguna
+--- nama input yang dikirim : -
+--- respon yang diberikan :
+---- tipe data : JSON
+---- isi data jika berhasil : list_disposisi_masuk.json
+--- Expected action from server :
+---- menampilkan data sesuai dengan contoh json
+---- list disposisi yang ditampilkan sesuai dengan ID Pengguna yang dikirim
+---- (optional) jika id pengguna tidak sesuai dengan token, return JSON error
+
+-- Detail Disposisi
+--- Method : GET
+--- URL : /disposisi/:id_disposisi
+--- nama input yang dikirim : -
+--- respon yang diberikan :
+---- tipe data : JSON
+---- isi data jika berhasil : detail_disposisi.json
+--- Expected action from server :
+---- menampilkan data sesuai dengan contoh json
+---- list disposisi yang ditampilkan sesuai dengan ID Pengguna yang dikirim
+---- (optional) Jika pengguna tidak ada dalam "instruksi kepada" maupun "disposisi kepada", maka return error
+
+-- Baca Disposisi
+--- Method : POST
+--- URL : /disposisi/baca
+--- nama input yang dikirim :
+---- id_pengguna
+---- id_disposisi
+--- respon yang diberikan :
+---- tipe data : JSON
+---- isi data jika berhasil : insert_berhasil.json
+--- Expected action from server :
+---- Mengubah status yang ada pada collection disposisi menjadi sudah dibaca
+---- (optional) menginformasikan kepada pengirim disposisi bahwa disposisi telah dibaca (PUSH Notification)
+
+-- Teruskan Disposisi
+--- Method : PUT
+--- URL : /disposisi/:id_disposisi,
+--- nama input yang dikirim :  Contohnya "teruskan_disposisi.json"
+---- disposisi_kepada (berupa STRING dengan pemisah koma(,) )
+---- isi_disposisi
+---- tanggal_disposisi
+---- instruksi_tambahan
+--- respon yang diberikan :
+---- tipe data : JSON
+---- isi data jika berhasil : berhasil_disposisi.json
+--- Expected action from server :
+---- tertera diatas
+---- tanggal instruksi masuk secara otomatis pada hari ini (jika tidak ada isinya)
+---- Notifikasi masuk ke User yang bersangkutan bahwa ada disposisi (optional) (di platform mobile dan web)
+---- Pada user yang terdapat pada "disposisi_kepada", "id_disposisi" masuk ke "id_disposisi_masuk" user tersebut
+---- Pada user yang meneruskan disposisi, "id_disposisi" masuk ke disposisi_keluar
+
+
+- Disposisi Keluar
+-- Lihat Disposisi Keluar
+--- Method : GET
+--- URL : /disposisi/keluar/:id_pengguna
+--- nama input yang dikirim : -
+--- respon yang diberikan :
+---- tipe data : JSON
+---- isi data jika berhasil : list_disposisi_keluar.json
+--- Expected action from server :
+---- menampilkan data sesuai dengan contoh json
+---- list disposisi keluar yang ditampilkan sesuai dengan ID Pengguna yang dikirim (ngambil dari list "id_disposisi_keluar" pengguna)
+---- (optional) jika id pengguna tidak sesuai dengan token, return JSON error
