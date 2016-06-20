@@ -7,8 +7,23 @@ router.get('/', function(req, res, next) {
   	var db = req.db;
   	var collection = db.get('agenda');
   	collection.find({},{},function(err,docs){
-  		res.json({"agenda" : docs});
-  });  
+  		if (err) {
+			res.json({
+				"results": {
+	    			"success": false,
+	    			"message": "Data {collection name} dengan ObjectID {ObjectID} tidak ditemukan"
+  				}
+			});
+		}
+		else {
+			res.json({
+		 	 	"results": {
+					"success": true,
+					"data": docs
+		  		}
+			});
+		}
+  	});  
 });
 
 //insert into agenda Done?Status dan Lampiran

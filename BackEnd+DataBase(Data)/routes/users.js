@@ -6,11 +6,24 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   	var db = req.db;
   	var collection = db.get('user');
-  	collection.find({},{},function(err,docs){
-  		res.json({"user" : docs});
-  });  
+  	if (err) {
+			res.json({
+				"results": {
+	    			"success": false,
+	    			"message": "Data {collection name} dengan ObjectID {ObjectID} tidak ditemukan"
+  				}
+			});
+		}
+		else {
+			res.json({
+		 	 	"results": {
+					"success": true,
+					"data": docs
+		  		}
+			});
+		}
+  	});  
 });
-
 //insert into user Done?Status dan Lampiran
 router.post('/', function(req, res) {
 	var db = req.db;
