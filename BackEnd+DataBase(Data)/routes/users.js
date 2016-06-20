@@ -6,7 +6,8 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   	var db = req.db;
   	var collection = db.get('user');
-  	if (err) {
+  	collection.find({},{},function(err,docs){
+  		if (err) {
 			res.json({
 				"results": {
 	    			"success": false,
@@ -16,13 +17,11 @@ router.get('/', function(req, res, next) {
 		}
 		else {
 			res.json({
-		 	 	"results": {
-					"success": true,
-					"data": docs
-		  		}
+		 	 	"results": docs
 			});
 		}
   	});  
+});
 
 //insert into user Done?Status dan Lampiran
 router.post('/', function(req, res) {

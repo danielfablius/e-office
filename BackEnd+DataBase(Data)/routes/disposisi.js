@@ -17,10 +17,7 @@ router.get('/', function(req, res, next) {
 		}
 		else {
 			res.json({
-		 	 	"results": {
-					"success": true,
-					"data": docs
-		  		}
+		 	 	"results": docs
 			});
 		}
   	});  
