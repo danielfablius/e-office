@@ -14,8 +14,8 @@ var db = monk('localhost:27017/eoffice');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var agenda = require('./routes/agenda');
-var agenda = require('./routes/jabatan');
-var agenda = require('./routes/disposisi');
+var jabatan = require('./routes/jabatan');
+var disposisi = require('./routes/disposisi');
 var app = express();
 
 // view engine setup

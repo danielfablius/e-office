@@ -23,7 +23,7 @@ router.get('/', function(req, res, next) {
 			});
 		}
   	});  
-});
+
 //insert into user Done?Status dan Lampiran
 router.post('/', function(req, res) {
 	var db = req.db;

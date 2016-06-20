@@ -6,7 +6,7 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   	var db = req.db;
   	var collection = db.get('agenda');
-  	collection.find({},{},function(err,docs){
+  	collection.find({"is_delete" : "0"},{},function(err,docs){
   		if (err) {
 			res.json({
 				"results": {
