@@ -17,6 +17,7 @@ var agenda = require('./routes/agenda');
 var jabatan = require('./routes/jabatan');
 var disposisi = require('./routes/disposisi');
 var suratmasuk = require('./routes/suratmasuk');
+var pengguna = require('./routes/pengguna');
 var app = express();
 
 // view engine setup
@@ -50,6 +51,7 @@ app.use('/agenda', agenda);
 app.use('/jabatan', jabatan);
 app.use('/disposisi', disposisi);
 app.use('/suratmasuk', suratmasuk);
+app.use('/pengguna', pengguna);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

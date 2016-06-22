@@ -3,14 +3,14 @@ var router = express.Router();
 
 
 //select all jabatan Done(that is_delete not 1)
-router.get('/pengguna', function(req, res, next) {
+router.get('/', function(req, res, next) {
   	var db = req.db;
   	var collection = db.get('pengguna');
   			db.pengguna.aggregate([{
 			$lookup:
 			{
 				from:"jabatan",
-				localField: : "id_jabatan",
+				localField: "id_jabatan",
 				foreignField: "id_jabatan",
 				as: "detail_pengguna:"
 			}
@@ -112,3 +112,5 @@ router.delete('/pengguna/:id_pengguna', function(req, res,next){
 		}
 	});
 });
+
+module.exports = router;
