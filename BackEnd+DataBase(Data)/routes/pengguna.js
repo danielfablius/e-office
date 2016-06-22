@@ -6,8 +6,28 @@ var router = express.Router();
 router.get('/pengguna', function(req, res, next) {
   	var db = req.db;
   	var collection = db.get('pengguna');
+  			db.pengguna.aggregate([{
+			$lookup:
+			{
+				from:"jabatan",
+				localField: : "id_jabatan",
+				foreignField: "id_jabatan",
+				as: "detail_pengguna:"
+			}
+		}]),
   	collection.find({},{},function(err,docs){
-  		res.json({"pengguna" : docs});
+  		if (err) {
+  			res.json({
+  				"result":{
+  					"success": false,
+  					"message": "data pengguna tidak ditemukan"
+  				}
+  			});
+  		}
+  		else{
+  			res.json({
+  				"pengguna" : docs});
+		}
   });  
 });
 
@@ -23,7 +43,6 @@ router.post('/pengguna', function(req, res){
 	var id_jabatan		= req.body.id_jabatan;
 	var no_telp			= req.body.no_telp;
 	var email			= req.body.email;
-	var detail_jabatan	= req.body.detail_jabatan;
 	var is_delete		= "0";
 
 	var collection = db.get('pengguna');
@@ -35,15 +54,6 @@ router.post('/pengguna', function(req, res){
 		"email"		: email,
 		"is_delete"	: is_delete
 	}, 
-		db.leftCollection.aggregate([{
-			$lookup:
-			{
-				from:"jabatan",
-				localField: : "id_jabatan",
-				foreignField: "id_jabatan",
-				as: "embeddedData"
-			}
-		}]),
 	function (err, doc){
 		if(err){
 			res.json({message: 'insert failed'});
