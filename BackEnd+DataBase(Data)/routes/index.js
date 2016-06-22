@@ -6,6 +6,30 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+router.get('/restore', function(req, res, next) {
+    var db = req.db;
+    var collection = db.get('agenda');
+    collection.update({},{$set:{"is_delete" : "0"}},{multi:true},
+    function(err,docs){
+        if (err) {
+            res.json({
+              "results": {
+                "success": false,
+                "message": err
+              }
+            });
+        }
+        else {
+            res.json({
+              "results": {
+                "success": true,
+                "message": "Berhasil"
+              }
+            });
+        }
+    });  
+});
+
 router.get('/userlist', function(req, res) {
 	var db = req.db;
 	var collection = db.get('users');

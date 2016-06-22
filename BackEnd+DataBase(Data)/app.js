@@ -16,9 +16,17 @@ var users = require('./routes/users');
 var agenda = require('./routes/agenda');
 var jabatan = require('./routes/jabatan');
 var disposisi = require('./routes/disposisi');
+var suratmasuk = require('./routes/suratmasuk');
 var app = express();
 
 // view engine setup
+//enabling CORS and All Method
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
@@ -41,6 +49,7 @@ app.use('/users', users);
 app.use('/agenda', agenda);
 app.use('/jabatan', jabatan);
 app.use('/disposisi', disposisi);
+app.use('/suratmasuk', suratmasuk);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

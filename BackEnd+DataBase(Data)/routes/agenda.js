@@ -23,6 +23,7 @@ router.get('/', function(req, res, next) {
   	});  
 });
 
+
 //insert into agenda Done?Status dan Lampiran
 router.post('/', function(req, res) {
 	var db = req.db;
@@ -36,7 +37,8 @@ router.post('/', function(req, res) {
 	var penerima = req.body.penerima;
 	var jenis_surat = req.body.jenis_surat;
 	var lampiran = req.body.lampiran;
-	var status = req.body.status;
+
+	var status = "Belum dibaca";
 	var is_delete = "0";
 
 	var collection = db.get('agenda');
@@ -86,6 +88,13 @@ router.get('/:agenda_id', function(req, res, next) {
   				}
 			});
 		}
+		else if(docs.is_delete == "1"){
+			res.json({
+		 	 	"results": {
+					"success": false
+				}
+			});
+		}
 		else {
 			res.json({
 		 	 	"results": {
@@ -110,7 +119,7 @@ router.put('/:agenda_id', function(req, res, next) {
 	var penerima = req.body.penerima;
 	var jenis_surat = req.body.jenis_surat;
 	var lampiran = req.body.lampiran;
-	var status = req.body.status;
+	var status = "Belum dibaca";
 	var is_delete = "0";
 
 	var collection = db.get('agenda');
@@ -161,7 +170,7 @@ router.delete('/:agenda_id', function(req, res ,next) {
 			res.json({
 			  "results": {
 			    "success": false,
-			    "message": "Gagal menghapus data Agenda dengan id"+ req.params.agenda_id +","+ err
+			    "message": "Gagal menghapus data Agenda dengan id " +req.params.agenda_id +" , "+ err
 			  }
 			});
 		}
@@ -169,12 +178,11 @@ router.delete('/:agenda_id', function(req, res ,next) {
 			res.json({
 			  "results": {
 			    "success": true,
-			    "message": "Berhasil menghapus data Agenda dengan id"+req.params.agenda_id
+			    "message": "Berhasil menghapus data Agenda dengan id "+req.params.agenda_id
 			  }
 			});
 		}
   	});  
 });
-
 
 module.exports = router;

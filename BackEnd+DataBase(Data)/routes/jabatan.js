@@ -1,17 +1,17 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET jabatans listing. */
+/* GET jabatan listing. */
 //select all jabatan Done
 router.get('/', function(req, res, next) {
   	var db = req.db;
-  	var collection = db.get('jabatan');
-  	collection.find({},{},function(err,docs){
-  		if (err) {
+    var collection = db.get('jabatan');
+  	collection.find({}, {sort: {level_jabatan: 1}}, function(err, docs){
+    if (err) {
 			res.json({
 				"results": {
 	    			"success": false,
-	    			"message": "Data {collection name} dengan ObjectID {ObjectID} tidak ditemukan"
+	    			"message": "Data Jabatan tidak ditemukan"
   				}
 			});
 		}
@@ -20,45 +20,40 @@ router.get('/', function(req, res, next) {
 		 	 	"results": docs
 			});
 		}
-  	});  
+    });
 });
+  	
 
 //insert into jabatan Done?Status dan Lampiran
 router.post('/', function(req, res) {
 	var db = req.db;
 
-	var no_surat = req.body.no_surat;
-	var no_user = req.body.no_user;
-	var tanggal_surat = req.body.tanggal_surat;
-	var tanggal_diterima = req.body.tanggal_diterima;
-	var pengirim = req.body.pengirim;
-	var perihal = req.body.perihal;
-	var penerima = req.body.penerima;
-	var jenis_surat = req.body.jenis_surat;
-	var lampiran = req.body.lampiran;
-	var status = req.body.status;
-	var is_delete = "0";
+	var level_jabatan = req.body.level_jabatan;
+	var nama_jabatan = req.body.nama_jabatan;
+	var parent_id = req.body.parent_id;
 
 	var collection = db.get('jabatan');
 	
 	collection.insert({
-		"no_surat" : no_surat,
-		"no_user" : no_user,
-		"tanggal_surat" : new Date(tanggal_surat),
-		"tanggal_diterima" : new Date(tanggal_diterima),
-		"pengirim" : pengirim,
-		"perihal" : perihal,
-		"penerima" : penerima,
-		"jenis_surat" : jenis_surat,
-		"lampiran" : lampiran,
-		"status" : status,
-		"is_delete" : is_delete
+		"level_jabatan" : level_jabatan,
+		"nama_jabatan" : nama_jabatan,
+		"parent_id" : parent_id
 	}, function (err, doc) {
 		if (err) {
-			res.json({message: 'insert failed'});
+			res.json({
+			  "results": {
+			    "success": false,
+			    "message": "Gagal menambahkan data Jabatan, "+ err
+			  }
+			});
 		}
 		else {
-			res.json({message: 'insert success'});
+			res.json({
+			  "results": {
+			    "success": true,
+			    "message": "Data jabatan berhasil ditambahkan"
+			  }
+			});
 		}
 	});
 });
@@ -68,51 +63,60 @@ router.get('/:jabatan_id', function(req, res, next) {
   	var db = req.db;
   	var collection = db.get('jabatan');
   	collection.findById(req.params.jabatan_id, function(err,docs){
-  		res.json({"jabatan" : docs});
-  });  
+   		if (err) {
+			res.json({
+				"results": {
+	    			"success": false,
+	    			"message": "Data Agenda dengan ObjectID" + req.params.agenda_id +"  tidak ditemukan"
+  				}
+			});
+		}
+		else {
+			res.json({
+		 	 	"results": {
+					"success": true,
+					"data": docs
+		  		}
+			});
+		}
+  	});  
 });
 
 //update jabatan by ID Done?Status dan Lampiran
 router.put('/:jabatan_id', function(req, res, next) {
 	var db = req.db;
 
-	var no_surat = req.body.no_surat;
-	var no_user = req.body.no_user;
-	var tanggal_surat = req.body.tanggal_surat;
-	var tanggal_diterima = req.body.tanggal_diterima;
-	var pengirim = req.body.pengirim;
-	var perihal = req.body.perihal;
-	var penerima = req.body.penerima;
-	var jenis_surat = req.body.jenis_surat;
-	var lampiran = req.body.lampiran;
-	var status = req.body.status;
-	var is_delete = "0";
+	var level_jabatan = req.body.level_jabatan;
+	var nama_jabatan = req.body.nama_jabatan;
+	var parent_id = req.body.parent_id;
 
 	var collection = db.get('jabatan');
 	
 	collection.update(req.params.jabatan_id, {
-		"no_surat" : no_surat,
-		"no_user" : no_user,
-		"tanggal_surat" : new Date(tanggal_surat),
-		"tanggal_diterima" : new Date(tanggal_diterima),
-		"pengirim" : pengirim,
-		"perihal" : perihal,
-		"penerima" : penerima,
-		"jenis_surat" : jenis_surat,
-		"lampiran" : lampiran,
-		"status" : status,
-		"is_delete" : is_delete
+		"level_jabatan" : level_jabatan,
+		"nama_jabatan" : nama_jabatan,
+		"parent_id" : parent_id
 	}, function (err, doc) {
 		if (err) {
-			res.json({message: 'update failed'});
+			res.json({
+			  "results": {
+			    "success": false,
+			    "message": "Gagal mengubah data Agenda dengan id"+ req.params.agenda_id +","+ err
+			  }
+			});
 		}
 		else {
-			res.json({message: 'update success'});
+			res.json({
+			  "results": {
+			    "success": true,
+			    "message": "Data agenda berhasil diubah"
+			  }
+			});
 		}
 	});
 });
 
-//soft Delete jabatan
+//soft Delete jabatan ?isdelete?
 router.delete('/:jabatan_id', function(req, res ,next) {
 	var db = req.db;
 	var is_delete = "1";
@@ -121,15 +125,24 @@ router.delete('/:jabatan_id', function(req, res ,next) {
   	collection.update(
   	{"_id" : req.params.jabatan_id}, 
   	{$set:{"is_delete" : is_delete}}, 
-  	function(err,docs){
+  	  	function(err,docs){
   		if (err) {
-			res.json({message: 'delete failed'});
+			res.json({
+			  "results": {
+			    "success": false,
+			    "message": "Gagal menghapus data Agenda dengan id " +req.params.agenda_id +" , "+ err
+			  }
+			});
 		}
 		else {
-			res.json({message: 'delete success'});
+			res.json({
+			  "results": {
+			    "success": true,
+			    "message": "Berhasil menghapus data Agenda dengan id "+req.params.agenda_id
+			  }
+			});
 		}
-  });  
+  	});  
 });
-
 
 module.exports = router;

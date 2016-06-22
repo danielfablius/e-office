@@ -51,7 +51,9 @@ FITUR :
 
 
 - Kelola Jabatan
--- List Jabatan
+
+DONE
+-- List Jabatan (DONE)
 --- Method : GET
 --- URL : /jabatan, 
 --- nama input yang dikirim : -
@@ -61,6 +63,7 @@ FITUR :
 --- Expected action from server :
 ---- Menampilkan list jabatan sort by level jabatan
 
+???
 -- List Jabatan (Tree)
 --- Method : GET
 --- URL : /jabatan_tree, 
@@ -72,7 +75,8 @@ FITUR :
 ---- Menampilkan list jabatan dalam bentuk tree menggunakan JSON
 ---- yang soft deletenya 1 tidak perlu ditampilkan
 
--- Detail Jabatan
+DONE
+-- Detail Jabatan (DONE)
 --- Method : GET
 --- URL : /jabatan/:id, 
 --- nama input yang dikirim : -
@@ -84,6 +88,7 @@ FITUR :
 ---- tertera diatas
 ---- yang soft deletenya 1 tidak perlu ditampilkan
 
+DONE
 -- Tambah Jabatan
 --- Method : POST
 --- URL : /jabatan, 
@@ -98,6 +103,7 @@ FITUR :
 --- Expected action from server :
 ---- Data yang ditambahkan dapat ditampilkan di List Jabatan
 
+DONE
 -- Update Jabatan
 --- Method : PUT
 --- URL : /jabatan/:id_jabatan, 
@@ -112,6 +118,7 @@ FITUR :
 --- Expected action from server :
 ---- Update data sesuai dengan data yang dikirimkan, jika salah satu input tidak ada, tidak perlu diupdate
 
+DONE
 -- Hapus Jabatan
 --- Method : DELETE
 --- URL : /jabatan/:id_jabatan, 
@@ -199,31 +206,7 @@ FITUR :
 ---- Mengubah data is_delete menjadi 1, lalu data tidak ditampilkan pada setiap kali di SELECT/GET datanya
 
 
-
-- Agenda
--- List Agenda
---- Method : GET
---- URL : /agenda,
---- nama input yang dikirim : -
---- respon yang diberikan :
----- tipe data : JSON
----- isi data jika berhasil : list_agenda.json
---- Expected action from server :
----- tertera diatas
----- yang soft deletenya 1 tidak perlu ditampilkan
-
--- Detail Agenda
---- Method : GET
---- URL : /agenda/:id_agenda, 
---- nama input yang dikirim : -
---- respon yang diberikan :
----- tipe data : JSON
----- isi data jika berhasil : detail_agenda.json
----- isi data jika gagal : gagal_detail.json
---- Expected action from server :
----- tertera diatas
----- yang soft deletenya 1 tidak perlu ditampilkan
-
+DONE ? lampiran
 -- Tambah Agenda
 --- Method : POST
 --- URL : /agenda, 
@@ -248,6 +231,7 @@ FITUR :
 ----- Note : Kalau di internet ada cara lebih baik, pakai yg itu aja. wkwk.
 ---- status secara default "belum dibaca"
 
+DONE ? lampiran
 -- Update Agenda
 --- Method : PUT
 --- URL : /agenda/:id_agenda, 
@@ -270,6 +254,7 @@ FITUR :
 ---- Lampiran yang sudah ada dihapus, diganti dengan lampiran yang baru diupload
 ---- status tidak diganti lewat fitur update agenda, tetapi pada disposisi
 
+DONE
 -- Delete Agenda
 --- Method : DELETE
 --- URL : /agenda/:id_agenda, 
@@ -281,8 +266,8 @@ FITUR :
 --- Expected action from server :
 ---- Mengubah data is_delete menjadi 1, lalu data tidak ditampilkan pada setiap kali di SELECT/GET datanya
 
-
-- Surat Masuk
+DONE ? LAMPIRAN
+- Surat Masuk (DARI TABEL AGENDA)
 -- List Surat Masuk
 --- Method : GET
 --- URL : /suratmasuk,
@@ -296,9 +281,10 @@ FITUR :
 ---- hanya menampilkan surat yang statusnya belum dibaca 
 ---- URL lampiran jangan lupa ditaro
 
--- Tolak (?)
+DONE
+-- Tolak 
 --- Method : POST
---- URL : /suratmasuk/tolak,
+--- URL : /suratmasuk/tolak/:surat_id
 --- nama input yang dikirim : -
 --- respon yang diberikan :
 ---- tipe data : JSON
