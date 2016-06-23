@@ -1,5 +1,8 @@
 var express = require('express');
+var jwt    = require('jsonwebtoken');
+var config = require('../config'); // get our config file
 var router = express.Router();
+var app = express();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -30,40 +33,77 @@ router.get('/restore', function(req, res, next) {
     });  
 });
 
-router.get('/userlist', function(req, res) {
-	var db = req.db;
-	var collection = db.get('users');
-	collection.find({},{},function(e,docs){
-		res.json({"users" : docs});
-	});
+router.post('/auth', function(req, res) {
+  var db = req.db;
+  var collection = db.get('user');
+  var username = req.body.username;  
+  collection.findOne({"username" : username},function(err,docs){
+      if (err) {
+        // console.log(docs);
+        res.json({
+          "results": {
+            "success": false,
+            "message": "Kombinasi username dan password salah"
+          }
+        });
+      }
+      if (!docs) {
+        res.json({
+          "results": {
+              "success": false,
+              "message": "Kombinasi username dan password salah"
+            }
+        });
+      // console.log(user);
+      } else {
+        // console.log(docs);
+        var key = config.secret;
+        // console.log(key);
+        var token = jwt.sign(docs, key, {
+          expiresIn: 1440 // expires in 24 hours
+        });
+
+        res.json({
+          "results": {
+            "success": true,
+            "user_id": docs._id,
+            "jabatan": docs.id_jabatan,
+            "token": token,
+            "message": "Login berhasil"
+          }
+        });
+      }
+  });
 });
 
-/* POST to Add User Service */
-router.post('/adduser', function(req, res) {
+router.use(function(req, res, next) {
 
-    // Set our internal DB variable
-    var db = req.db;
+  // check header or url parameters or post parameters for token
+  var token = req.body.token || req.query.token || req.headers['x-access-token'];
 
-    // Get our form values. These rely on the "name" attributes
-    var userName = req.body.username;
-    var userEmail = req.body.useremail;
+  // decode token
+  if (token) {
 
-    // Set our collection
-    var collection = db.get('users');
-
-    // Submit to the DB
-    collection.insert({
-        "username" : userName,
-        "email" : userEmail
-    }, function (err, doc) {
-        if (err) {
-            // If it failed, return error
-            res.send("There was a problem adding the information to the database.");
-        }
-        else {
-            // And forward to success page
-            res.redirect("userlist");
-        }
+    // verifies secret and checks exp
+    jwt.verify(token, key, function(err, decoded) {      
+      if (err) {
+        return res.json({ success: false, message: 'Failed to authenticate token.' });    
+      } else {
+        // if everything is good, save to request for use in other routes
+        req.decoded = decoded;    
+        next();
+      }
     });
+
+  } else {
+
+    // if there is no token
+    // return an error
+    return res.status(403).send({ 
+        success: false, 
+        message: 'No token provided.' 
+    }); 
+  }
 });
+
 module.exports = router;
