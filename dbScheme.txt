@@ -76,7 +76,10 @@ tanggal_penyelesaian (deadline)
 
 
 CONNECT TO MONGODB: 
-(32bit) mongod --dbpath D:\DANIEL\KP\E-office\data --storageEngine=mmapv1
+(32bit) mongod --dbpath D:\DANIEL\KP\E-office\BackEnd+DataBase(Data)\data --storageEngine=mmapv1
+
+Repair 
+mongod --dbpath D:\DANIEL\KP\E-office\BackEnd+DataBase(Data)\data --repair --repairpath D:\DANIEL\KP\E-office\BackEnd+DataBase(Data)\data
 
 Collection
 Users :
