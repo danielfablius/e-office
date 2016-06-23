@@ -6,8 +6,11 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 //database setup
+var config = require('./config'); // get our config file
 var mongo = require('mongodb');
 var monk = require('monk');
+// var mongoose = require('mongoose');
+// var db = mongoose.connect(config.database);
 var db = monk('localhost:27017/eoffice');
 
 //routing (controller model like) 
