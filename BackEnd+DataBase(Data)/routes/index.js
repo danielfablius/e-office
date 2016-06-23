@@ -3,6 +3,7 @@ var jwt    = require('jsonwebtoken');
 var config = require('../config'); // get our config file
 var router = express.Router();
 var app = express();
+var key = config.secret;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -33,7 +34,7 @@ router.get('/restore', function(req, res, next) {
     });  
 });
 
-router.post('/auth', function(req, res) {
+router.post('/login', function(req, res) {
   var db = req.db;
   var collection = db.get('user');
   var username = req.body.username;  
@@ -57,7 +58,6 @@ router.post('/auth', function(req, res) {
       // console.log(user);
       } else {
         // console.log(docs);
-        var key = config.secret;
         // console.log(key);
         var token = jwt.sign(docs, key, {
           expiresIn: 1440 // expires in 24 hours
@@ -94,7 +94,6 @@ router.use(function(req, res, next) {
         next();
       }
     });
-
   } else {
 
     // if there is no token

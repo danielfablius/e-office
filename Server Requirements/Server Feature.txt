@@ -32,7 +32,7 @@ ACCESS ROLE :
 -- Disposisi keluar
 
 
-FITUR :
+FITUR : (DONE ?ENKRIPSI)
 - Login
 -- Method : POST
 -- URL : /login, 
