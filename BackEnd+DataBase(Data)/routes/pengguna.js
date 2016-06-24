@@ -5,31 +5,48 @@ var router = express.Router();
 //select all jabatan Done(that is_delete not 1)
 router.get('/', function(req, res, next) {
   	var db = req.db;
-  	var collection = db.get('pengguna');
-  			db.collection('pengguna').aggregate([{
-			$lookup:
+  	var collection = db.get('user');
+	collection.col.aggregate(
+	[
+		{ "$lookup" :
 			{
-				from:"jabatan",
-				localField: "id_jabatan",
-				foreignField: "id_jabatan",
-				as: "detail_pengguna:"
+				"from" :"jabatan",
+				"localField" : "id_jabatan",
+				"foreignField" : "_id",
+				"as" : "detail_jabatan"
+			}}
+	],
+	function(err, docs) {
+	if (err) {
+		res.json({
+			"result":{
+				"success": false,
+				"message": "data pengguna tidak ditemukan"
 			}
-		}]),
-  	collection.find({},{},function(err,docs){
-  		if (err) {
-  			res.json({
-  				"result":{
-  					"success": false,
-  					"message": "data pengguna tidak ditemukan"
-  				}
-  			});
-  		}
-  		else{
-  			res.json({
-  				"pengguna" : docs});
-		}
-  });  
-});
+		});
+	}
+	else{
+		res.json({
+			"results": docs});
+		}		
+	}
+)});
+
+	// ,	
+ //  	collection.find({},{},function(err,docs){
+  // 		if (err) {
+  // 			res.json({
+  // 				"result":{
+  // 					"success": false,
+  // 					"message": "data pengguna tidak ditemukan"
+  // 				}
+  // 			});
+  // 		}
+  // 		else{
+  // 			res.json({
+  // 				"pengguna" : docs});
+		// }
+ //  });  
 
 //pengguna tree
 router.get('/', function(req,res,next){
@@ -48,7 +65,7 @@ router.post('/', function(req, res){
 	var email			= req.body.email;
 	var is_delete		= "0";
 
-	var collection = db.get('pengguna');
+	var collection = db.get('user');
 
 	collection.insert({
 		"username"	: username,
@@ -79,7 +96,7 @@ router.put('/pengguna/:id_pengguna', function(req, res){
 	var email		= req.body.email;
 	var is_delete	= req.body.is_delete;
 
-	var collection	= db.get('pengguna');
+	var collection	= db.get('user');
 
 	collection.update({
 		"username"	: username,
@@ -102,7 +119,7 @@ router.delete('/pengguna/:id_pengguna', function(req, res,next){
 	var db			= req.db;
 	var is_delete	= "1";
 
-	var collection	= db.get('pengguna');
+	var collection	= db.get('user');
 	collection.update(
 	{"_id" : req.params.agenda_id},
 	{$set: {"is_delete" : is_delete}},
