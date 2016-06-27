@@ -133,6 +133,7 @@ DONE
 
 
 - Kelola Pengguna
+
 -- List Pengguna
 --- Method : GET
 --- URL : /pengguna,
@@ -206,7 +207,7 @@ DONE
 ---- Mengubah data is_delete menjadi 1, lalu data tidak ditampilkan pada setiap kali di SELECT/GET datanya
 
 
-DONE ? lampiran
+DONE ? status
 -- Tambah Agenda
 --- Method : POST
 --- URL : /agenda, 
@@ -219,7 +220,7 @@ DONE ? lampiran
 ---- perihal
 ---- penerima
 ---- jenis_surat
----- lampiran (?)
+---- lampiran
 --- respon yang diberikan :
 ---- tipe data : JSON
 ---- isi data jika berhasil : insert_berhasil.json
@@ -231,7 +232,7 @@ DONE ? lampiran
 ----- Note : Kalau di internet ada cara lebih baik, pakai yg itu aja. wkwk.
 ---- status secara default "belum dibaca"
 
-DONE ? lampiran
+DONE ? status
 -- Update Agenda
 --- Method : PUT
 --- URL : /agenda/:id_agenda, 
@@ -244,7 +245,7 @@ DONE ? lampiran
 ---- perihal
 ---- penerima
 ---- jenis_surat
----- lampiran (?)
+---- lampiran 
 --- respon yang diberikan :
 ---- tipe data : JSON
 ---- isi data jika berhasil : update_berhasil.json
@@ -266,7 +267,7 @@ DONE
 --- Expected action from server :
 ---- Mengubah data is_delete menjadi 1, lalu data tidak ditampilkan pada setiap kali di SELECT/GET datanya
 
-DONE ? LAMPIRAN
+DONE ? status
 - Surat Masuk (DARI TABEL AGENDA)
 -- List Surat Masuk
 --- Method : GET

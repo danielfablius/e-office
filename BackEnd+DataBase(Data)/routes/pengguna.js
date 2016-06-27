@@ -32,26 +32,10 @@ router.get('/', function(req, res, next) {
 	}
 )});
 
-	// ,	
- //  	collection.find({},{},function(err,docs){
-  // 		if (err) {
-  // 			res.json({
-  // 				"result":{
-  // 					"success": false,
-  // 					"message": "data pengguna tidak ditemukan"
-  // 				}
-  // 			});
-  // 		}
-  // 		else{
-  // 			res.json({
-  // 				"pengguna" : docs});
-		// }
- //  });  
-
 //pengguna tree
-router.get('/', function(req,res,next){
-	var db = req.db
-})
+// router.get('/', function(req,res,next){
+// 	var db = req.db
+// })
 
 //insert into pengguna
 router.post('/', function(req, res){
