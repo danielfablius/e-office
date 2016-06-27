@@ -179,6 +179,7 @@ DONE
 ---- user yang telah terdaftar dapat login
 ---- password di enkripsi terlebih dahulu sebelum masuk ke database
 
+DONE(PASSWORD?)
 -- Update Pengguna
 --- Method : PUT
 --- URL : /pengguna/:id_pengguna, 
@@ -198,6 +199,7 @@ DONE
 ---- jika password terisi, enkripsi terlebih dahulu passwordnya
 ---- username tidak boleh sama dengan yang lain, jika sama kasih error.
 
+DONE
 -- Delete Pengguna
 --- Method : DELETE
 --- URL : /pengguna/:id_pengguna, 

@@ -6,7 +6,7 @@ router.get('/', function(req, res, next) {
   	var db = req.db;
   	var collection = db.get('pengguna');
 	collection.col.aggregate(
-	[	
+	[	{ "$match" : {"is_delete" : "0"}},
 		{ "$lookup" :
 			{
 				"from" :"jabatan",
@@ -124,7 +124,7 @@ router.post('/', function(req, res){
 });
 
 //update pengguna
-router.put('/pengguna/:id_pengguna', function(req, res){
+router.put('/pengguna/:pengguna_id', function(req, res){
 	var db = req.db;
 
 	var username		= req.body.username;
@@ -137,41 +137,60 @@ router.put('/pengguna/:id_pengguna', function(req, res){
 	var hash = crypto.createHash('md5').update(password).digest('hex');
 	var collection = db.get('pengguna');
 
-	collection.update({
+	collection.update(
+	{"_id" : req.params.pengguna_id},
+	{$set: {  
 		"username"	: username,
 		"password" : hash,
 		"nama"		: nama,
 		"id_jabatan" : id_jabatan,
 		"no_telp"	: no_telp,
-		"email"		: email,
-		"is_delete"	: is_delete,
-		"id_disposisi_masuk" : [""],
-		"id_disposisi_keluar" : [""]
-	}, function (err, doc){
+		"email"		: emails
+	}}, function (err, doc){
 		if(err){
-			res.json({message: 'update failed'});
+			res.json({
+			  "results": {
+			    "success": false,
+			    "message": "Gagal mengubah data pengguna ," + err
+			  }
+			});
 		}
 		else{
-			res.json({message: 'update success'});
+			res.json({
+			  "results": {
+			    "success": true,
+			    "message": "Data pengguna berhasil diubah"
+			  }
+			});
 		}
 	});
 });
 
 //delete pengguna
-router.delete('/pengguna/:id_pengguna', function(req, res,next){
+router.delete('/pengguna/:pengguna_id', function(req, res,next){
 	var db			= req.db;
 	var is_delete	= "1";
 
-	var collection	= db.get('user');
+	var collection	= db.get('pengguna');
 	collection.update(
-	{"_id" : req.params.agenda_id},
+	{"_id" : req.params.pengguna_id},
 	{$set: {"is_delete" : is_delete}},
 	function(err,docs){
 		if(err){
-			res.json({message: 'delete failed'});
+			res.json({
+			  "results": {
+			    "success": false,
+			    "message": "Gagal menghapus data Agenda dengan id " +req.params.agenda_id +" , "+ err
+			  }
+			});
 		}
 		else{
-			res.json({message: 'delete success'});
+			res.json({
+			  "results": {
+			    "success": true,
+			    "message": "Berhasil menghapus data Agenda dengan id "+req.params.agenda_id
+			  }
+			});
 		}
 	});
 });
