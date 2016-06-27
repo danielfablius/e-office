@@ -2,11 +2,12 @@ var express = require('express');
 var jwt    = require('jsonwebtoken');
 var crypto = require('crypto');
 var config = require('../config'); // get our config file
-var router = express.Router();
-var app = express();
-var key = config.secret;
 var multer = require('multer');
 var path = require('path');
+var router = express.Router();
+var key = config.secret;
+var app = express();
+
 // var upload = multer({ dest: '../upload/'});
 
 /* GET home page. */
@@ -40,11 +41,11 @@ router.get('/restore', function(req, res, next) {
 
 router.post('/login', function(req, res) {
   var db = req.db;
-  var collection = db.get('user');
+  var collection = db.get('pengguna');
   var username = req.body.username;  
   collection.findOne({"username" : username},function(err,docs){
-      if (err) {
-        // console.log(docs);
+    if (err) {
+        
         res.json({
           "results": {
             "success": false,
@@ -53,29 +54,38 @@ router.post('/login', function(req, res) {
         });
       }
       if (!docs) {
+        console.log(docs);
         res.json({
           "results": {
               "success": false,
               "message": "Kombinasi username dan password salah"
             }
         });
-      // console.log(user);
-      } else {
-        // console.log(docs);
-        // console.log(key);
-        var token = jwt.sign(docs, key, {
-          expiresIn: 1440 // expires in 24 hours
-        });
-
+      } 
+      else if (docs) {
+      // check if password matches
+      var hash = crypto.createHash('md5').update(req.body.password).digest('hex');
+      if (docs.password != hash) {
         res.json({
           "results": {
-            "success": true,
-            "user_id": docs._id,
-            "jabatan": docs.id_jabatan,
-            "token": token,
-            "message": "Login berhasil"
-          }
+              "success": false,
+              "message": "Kombinasi username dan password salah"
+            }
         });
+      } else {
+          var token = jwt.sign(docs, key, {
+            expiresIn: 1440 // expires in 24 hours
+          });
+
+          res.json({
+            "results": {
+              "success": true,
+              "user_id": docs._id,
+              "jabatan": docs.id_jabatan,
+              "token": token,
+              "message": "Login berhasil"}
+            });
+        }
       }
   });
 });

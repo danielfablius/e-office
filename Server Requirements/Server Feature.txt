@@ -32,7 +32,7 @@ ACCESS ROLE :
 -- Disposisi keluar
 
 
-FITUR : (DONE ?ENKRIPSI)
+FITUR : (DONE)
 - Login
 -- Method : POST
 -- URL : /login, 
@@ -134,6 +134,7 @@ DONE
 
 - Kelola Pengguna
 
+DONE
 -- List Pengguna
 --- Method : GET
 --- URL : /pengguna,
@@ -145,6 +146,7 @@ DONE
 ---- tertera diatas
 ---- yang soft deletenya 1 tidak perlu ditampilkan
 
+DONE
 -- Detail Pengguna
 --- Method : GET
 --- URL : /pengguna/:id_pengguna, 
@@ -157,6 +159,7 @@ DONE
 ---- tertera diatas
 ---- yang soft deletenya 1 tidak perlu ditampilkan
 
+(DONE)
 -- Tambah Pengguna
 --- Method : POST
 --- URL : /pengguna, 
