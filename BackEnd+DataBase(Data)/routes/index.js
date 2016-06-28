@@ -73,18 +73,26 @@ router.post('/login', function(req, res) {
             }
         });
       } else {
+          var iduser = docs._id;
+          var nama = docs.nama;
+          var id_jabatan= docs.id_jabatan;
           var token = jwt.sign(docs, key, {
             expiresIn: 1440 // expires in 24 hours
           });
 
-          res.json({
+          collection=db.get('jabatan');
+          collection.find({"_id": id_jabatan},function(err,doc){
+            res.json({
             "results": {
               "success": true,
-              "user_id": docs._id,
-              "jabatan": docs.id_jabatan,
+              "user_id": iduser,
+              "nama" : nama,
+              "nama_jabatan" : doc.nama_jabatan,
+              "level_jabatan": doc.level_jabatan,
               "token": token,
               "message": "Login berhasil"}
             });
+          });
         }
       }
   });

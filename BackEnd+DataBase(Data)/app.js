@@ -41,7 +41,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use('/static', express.static('public'));
+app.use('/uploads', express.static('../uploads'));
 //make db accesible
 app.use(function(req,res,next){
   req.db = db;

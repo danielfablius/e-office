@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
   	var db = req.db;
   	var collection = db.get('pengguna');
 	collection.col.aggregate(
-	[	{ "$match" : {"is_delete" : "0"}},
+	[	
 		{ "$lookup" :
 			{
 				"from" :"jabatan",
@@ -55,7 +55,7 @@ router.get('/:pengguna_id', function(req, res, next) {
 			}
 		});
 	}
-	else if(docs.is_delete == "1"){
+	else if(docs[0].is_delete == "1"){
 			res.json({
 		 	 	"results": {
 				"success": false,
@@ -64,10 +64,11 @@ router.get('/:pengguna_id', function(req, res, next) {
 		});
 	}
 	else{
+		delete docs[0].password;
 		res.json({
 			"results": {
 				"success": true,
-				"data": docs
+				"data": docs[0]
 			}
 		});
 	}		

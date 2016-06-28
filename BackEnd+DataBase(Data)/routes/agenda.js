@@ -4,6 +4,8 @@ var multer = require('multer');
 var router = express.Router();
 var multer = require('multer');
 var path = require('path');
+var crypto = require('crypto');
+var fs = require('fs');
 
 //select all agenda Done(that is_delete not 1)
 router.get('/', function(req, res, next) {
@@ -56,7 +58,7 @@ router.post('/', function(req, res) {
 		var perihal = req.body.perihal;
 		var penerima = req.body.penerima;
 		var jenis_surat = req.body.jenis_surat;
-		var lampiran = req.file.path;
+		var lampiran = "/uploads/"+req.file.filename;
 	    if(err){
 		    res.json({
 			  "results": {
@@ -156,27 +158,8 @@ router.put('/:agenda_id', function(req, res, next) {
 		var perihal = req.body.perihal;
 		var penerima = req.body.penerima;
 		var jenis_surat = req.body.jenis_surat;
-		if(typeof(req.file)=='undefined'){
-			collection.find({_id: req.params.agenda_id},{},
-				function(err, docs){
-					if (err) {
-						res.json({
-						  "results": {
-						    "success": false,
-						    "message": "Gagal mengubah data Agenda dengan id"+ req.params.agenda_id +","+ err
-						  }
-						});
-					}
-					else {
-						var lampiran = docs[0].lampiran;
-					}	
-				}
-			);
-		}
-		else {
-			var lampiran = req.file.path;
-		}
-	    if(err){
+		var lampiran = "";
+		if(err){
 		    res.json({
 			  "results": {
 			    "success": false,
@@ -184,36 +167,59 @@ router.put('/:agenda_id', function(req, res, next) {
 			  }
 			}); 
 	    }
-		collection.update(req.params.agenda_id, {
-			"no_surat" : no_surat,
-			"no_agenda" : no_agenda,
-			"tanggal_surat" : new Date(tanggal_surat),
-			"tanggal_diterima" : new Date(tanggal_diterima),
-			"pengirim" : pengirim,
-			"perihal" : perihal,
-			"penerima" : penerima,
-			"jenis_surat" : jenis_surat,
-			"lampiran" : lampiran,
-			"status" : status,
-			"is_delete" : is_delete
-		}, function (err, doc) {
-			if (err) {
-				res.json({
-				  "results": {
-				    "success": false,
-				    "message": "Gagal mengubah data Agenda dengan id"+ req.params.agenda_id +","+ err
-				  }
-				});
+		collection.find({_id: req.params.agenda_id},{},function(err, docs){
+		if (err) {
+			res.json({
+			  "results": {
+			    "success": false,
+			    "message": "Gagal mengubah data Agenda dengan id"+ req.params.agenda_id +","+ err
+			  }
+			});
+		}
+		else {
+			lampiran = docs[0].lampiran;
+			if(typeof(req.file)!='undefined') {
+				fs.unlinkSync('..'+lampiran);
+				console.log('successfully deleted ..'+lampiran);
+				lampiran = "/uploads/"+req.file.filename;
 			}
-			else {
-				res.json({
-				  "results": {
-				    "success": true,
-				    "message": "Data agenda berhasil diubah"
-				  }
-				});
-			}
-		});
+			collection.update(req.params.agenda_id, {
+				"no_surat" : no_surat,
+				"no_agenda" : no_agenda,
+				"tanggal_surat" : new Date(tanggal_surat),
+				"tanggal_diterima" : new Date(tanggal_diterima),
+				"pengirim" : pengirim,
+				"perihal" : perihal,
+				"penerima" : penerima,
+				"jenis_surat" : jenis_surat,
+				"lampiran" : lampiran,
+				"status" : status,
+				"is_delete" : is_delete
+			}, function (err, doc) {
+				if (err) {
+					res.json({
+					  "results": {
+					    "success": false,
+					    "message": "Gagal mengubah data Agenda dengan id"+ req.params.agenda_id +","+ err
+					  }
+					});
+				}
+				else {
+					res.json({
+					  "results": {
+					    "success": true,
+					    "message": "Data agenda berhasil diubah"
+					  }
+					});
+				}
+			});
+		}	
+	}
+);
+
+
+
+	    
   	});
 });
 

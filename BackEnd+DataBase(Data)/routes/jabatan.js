@@ -24,7 +24,7 @@ router.get('/', function(req, res, next) {
 });
   	
 
-//insert into jabatan Done?Status dan Lampiran
+//insert into jabatan Done?
 router.post('/', function(req, res) {
 	var db = req.db;
 
