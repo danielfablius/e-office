@@ -1,7 +1,7 @@
 var express = require('express');
 var crypto = require('crypto');
 var router = express.Router();
-
+var ObjectID = require('mongodb').ObjectID;
 //select all jabatan Done(that is_delete not 1)
 router.get('/', function(req, res, next) {
   	var db = req.db;
@@ -98,7 +98,7 @@ router.post('/', function(req, res){
 		"username"	: username,
 		"password" : hash,
 		"nama"		: nama,
-		"id_jabatan" : id_jabatan,
+		"id_jabatan" : new ObjectID(id_jabatan),
 		"no_telp"	: no_telp,
 		"email"		: email,
 		"is_delete"	: is_delete,

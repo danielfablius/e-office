@@ -79,7 +79,7 @@ router.post('/login', function(req, res) {
           var token = jwt.sign(docs, key, {
             expiresIn: 1440 // expires in 24 hours
           });
-
+          console.log(docs);
           collection=db.get('jabatan');
           collection.find({"_id": id_jabatan},function(err,doc){
             res.json({
