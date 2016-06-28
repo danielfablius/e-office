@@ -1,6 +1,7 @@
 var express = require('express');
-var router = express.Router();
 var crypto = require('crypto');
+var router = express.Router();
+
 //select all jabatan Done(that is_delete not 1)
 router.get('/', function(req, res, next) {
   	var db = req.db;
