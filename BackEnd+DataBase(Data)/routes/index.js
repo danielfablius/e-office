@@ -82,13 +82,14 @@ router.post('/login', function(req, res) {
           console.log(docs);
           collection=db.get('jabatan');
           collection.find({"_id": id_jabatan},function(err,doc){
+            console.log(doc);
             res.json({
             "results": {
               "success": true,
               "user_id": iduser,
               "nama" : nama,
-              "nama_jabatan" : doc.nama_jabatan,
-              "level_jabatan": doc.level_jabatan,
+              "nama_jabatan" : doc[0].nama_jabatan,
+              "level_jabatan": doc[0].level_jabatan,
               "token": token,
               "message": "Login berhasil"}
             });

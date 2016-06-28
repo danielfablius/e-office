@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
   	var db = req.db;
   	var collection = db.get('pengguna');
 	collection.col.aggregate(
-	[	
+	[	{ "$match" : { "is_delete" : "0" }},
 		{ "$lookup" :
 			{
 				"from" :"jabatan",
@@ -126,7 +126,7 @@ router.post('/', function(req, res){
 });
 
 //update pengguna
-router.put('/pengguna/:pengguna_id', function(req, res){
+router.put('/:pengguna_id', function(req, res){
 	var db = req.db;
 
 	var username		= req.body.username;
@@ -139,16 +139,21 @@ router.put('/pengguna/:pengguna_id', function(req, res){
 	var hash = crypto.createHash('md5').update(password).digest('hex');
 	var collection = db.get('pengguna');
 
-	collection.update(
-	{"_id" : req.params.pengguna_id},
-	{$set: {  
+	var updatedArray = {  
 		"username"	: username,
 		"password" : hash,
 		"nama"		: nama,
-		"id_jabatan" : id_jabatan,
+		"id_jabatan" : new ObjectID(id_jabatan),
 		"no_telp"	: no_telp,
-		"email"		: emails
-	}}, function (err, doc){
+		"email"		: email
+	};
+	if(password == ""){
+		delete updatedArray.password;
+	}
+
+	collection.update(
+	{"_id" : req.params.pengguna_id},
+	{$set: updatedArray}, function (err, doc){
 		if(err){
 			res.json({
 			  "results": {
@@ -169,7 +174,7 @@ router.put('/pengguna/:pengguna_id', function(req, res){
 });
 
 //delete pengguna
-router.delete('/pengguna/:pengguna_id', function(req, res,next){
+router.delete('/:pengguna_id', function(req, res,next){
 	var db			= req.db;
 	var is_delete	= "1";
 
