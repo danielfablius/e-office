@@ -181,7 +181,7 @@ router.delete('/pengguna/:pengguna_id', function(req, res,next){
 			res.json({
 			  "results": {
 			    "success": false,
-			    "message": "Gagal menghapus data Agenda dengan id " +req.params.agenda_id +" , "+ err
+			    "message": "Gagal menghapus data Pengguna dengan id " +req.params.pengguna_id +" , "+ err
 			  }
 			});
 		}
@@ -189,7 +189,7 @@ router.delete('/pengguna/:pengguna_id', function(req, res,next){
 			res.json({
 			  "results": {
 			    "success": true,
-			    "message": "Berhasil menghapus data Agenda dengan id "+req.params.agenda_id
+			    "message": "Berhasil menghapus data Pengguna dengan id "+req.params.pengguna_id
 			  }
 			});
 		}

@@ -67,7 +67,7 @@ router.get('/:jabatan_id', function(req, res, next) {
 			res.json({
 				"results": {
 	    			"success": false,
-	    			"message": "Data Agenda dengan ObjectID" + req.params.agenda_id +"  tidak ditemukan"
+	    			"message": "Data jabatan dengan ObjectID" + req.params.jabatan_id +"  tidak ditemukan"
   				}
 			});
 		}
@@ -85,6 +85,7 @@ router.get('/:jabatan_id', function(req, res, next) {
 //update jabatan by ID Done?Status dan Lampiran
 router.put('/:jabatan_id', function(req, res, next) {
 	var db = req.db;
+	console.log(req);
 
 	var level_jabatan = req.body.level_jabatan;
 	var nama_jabatan = req.body.nama_jabatan;
@@ -101,7 +102,7 @@ router.put('/:jabatan_id', function(req, res, next) {
 			res.json({
 			  "results": {
 			    "success": false,
-			    "message": "Gagal mengubah data Agenda dengan id"+ req.params.agenda_id +","+ err
+			    "message": "Gagal mengubah data jabatan dengan id"+ req.params.jabatan_id +","+ err
 			  }
 			});
 		}
@@ -109,7 +110,7 @@ router.put('/:jabatan_id', function(req, res, next) {
 			res.json({
 			  "results": {
 			    "success": true,
-			    "message": "Data agenda berhasil diubah"
+			    "message": "Data jabatan berhasil diubah"
 			  }
 			});
 		}
@@ -130,7 +131,7 @@ router.delete('/:jabatan_id', function(req, res ,next) {
 			res.json({
 			  "results": {
 			    "success": false,
-			    "message": "Gagal menghapus data Agenda dengan id " +req.params.agenda_id +" , "+ err
+			    "message": "Gagal menghapus data jabatan dengan id " +req.params.jabatan_id +" , "+ err
 			  }
 			});
 		}
@@ -138,11 +139,11 @@ router.delete('/:jabatan_id', function(req, res ,next) {
 			res.json({
 			  "results": {
 			    "success": true,
-			    "message": "Berhasil menghapus data Agenda dengan id "+req.params.agenda_id
+			    "message": "Berhasil menghapus data jabatan dengan id "+req.params.jabatan_id
 			  }
 			});
 		}
-  	});  
+  	});
 });
 
 module.exports = router;
