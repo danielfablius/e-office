@@ -39,94 +39,94 @@ router.get('/restore', function(req, res, next) {
     });  
 });
 
-router.post('/login', function(req, res) {
-  var db = req.db;
-  var collection = db.get('pengguna');
-  var username = req.body.username;  
-  collection.findOne({"username" : username},function(err,docs){
-    if (err) {
+// router.post('/login', function(req, res) {
+//   var db = req.db;
+//   var collection = db.get('pengguna');
+//   var username = req.body.username;  
+//   collection.findOne({"username" : username},function(err,docs){
+//     if (err) {
         
-        res.json({
-          "results": {
-            "success": false,
-            "message": "Kombinasi username dan password salah"
-          }
-        });
-      }
-      if (!docs) {
-        console.log(docs);
-        res.json({
-          "results": {
-              "success": false,
-              "message": "Kombinasi username dan password salah"
-            }
-        });
-      } 
-      else if (docs) {
-      // check if password matches
-      var hash = crypto.createHash('md5').update(req.body.password).digest('hex');
-      if (docs.password != hash) {
-        res.json({
-          "results": {
-              "success": false,
-              "message": "Kombinasi username dan password salah"
-            }
-        });
-      } else {
-          var iduser = docs._id;
-          var nama = docs.nama;
-          var id_jabatan= docs.id_jabatan;
-          var token = jwt.sign(docs, key, {
-            expiresIn: 1440 // expires in 24 hours
-          });
-          console.log(docs);
-          collection=db.get('jabatan');
-          collection.find({"_id": id_jabatan},function(err,doc){
-            console.log(doc);
-            res.json({
-            "results": {
-              "success": true,
-              "user_id": iduser,
-              "nama" : nama,
-              "nama_jabatan" : doc[0].nama_jabatan,
-              "level_jabatan": doc[0].level_jabatan,
-              "token": token,
-              "message": "Login berhasil"}
-            });
-          });
-        }
-      }
-  });
-});
+//         res.json({
+//           "results": {
+//             "success": false,
+//             "message": "Kombinasi username dan password salah"
+//           }
+//         });
+//       }
+//       if (!docs) {
+//         console.log(docs);
+//         res.json({
+//           "results": {
+//               "success": false,
+//               "message": "Kombinasi username dan password salah"
+//             }
+//         });
+//       } 
+//       else if (docs) {
+//       // check if password matches
+//       var hash = crypto.createHash('md5').update(req.body.password).digest('hex');
+//       if (docs.password != hash) {
+//         res.json({
+//           "results": {
+//               "success": false,
+//               "message": "Kombinasi username dan password salah"
+//             }
+//         });
+//       } else {
+//           var iduser = docs._id;
+//           var nama = docs.nama;
+//           var id_jabatan= docs.id_jabatan;
+//           var token = jwt.sign(docs, key, {
+//             expiresIn: 1440 // expires in 24 hours
+//           });
+//           console.log(docs);
+//           collection=db.get('jabatan');
+//           collection.find({"_id": id_jabatan},function(err,doc){
+//             console.log(doc);
+//             res.json({
+//             "results": {
+//               "success": true,
+//               "user_id": iduser,
+//               "nama" : nama,
+//               "nama_jabatan" : doc[0].nama_jabatan,
+//               "level_jabatan": doc[0].level_jabatan,
+//               "token": token,
+//               "message": "Login berhasil"}
+//             });
+//           });
+//         }
+//       }
+//   });
+// });
 
-router.use(function(req, res, next) {
+// router.use(function(req, res, next) {
 
-  // check header or url parameters or post parameters for token
-  var token = req.body.token || req.query.token || req.headers['x-access-token'];
+//   // check header or url parameters or post parameters for token
+//   var token = req.body.token || req.query.token || req.headers['x-access-token'];
 
-  // decode token
-  if (token) {
+//   // decode token
+//   if (token) {
 
-    // verifies secret and checks exp
-    jwt.verify(token, key, function(err, decoded) {      
-      if (err) {
-        return res.json({ success: false, message: 'Failed to authenticate token.' });    
-      } else {
-        // if everything is good, save to request for use in other routes
-        req.decoded = decoded;    
-        next();
-      }
-    });
-  } else {
+//     // verifies secret and checks exp
+//     jwt.verify(token, key, function(err, decoded) {      
+//       if (err) {
+//         return res.json({ success: false, message: 'Failed to authenticate token.' });    
+//       } else {
+//         // if everything is good, save to request for use in other routes
+//         req.decoded = decoded;    
+//         next();
+//       }
+//     });
+//   } else {
 
-    // if there is no token
-    // return an error
-    return res.status(403).send({ 
-        success: false, 
-        message: 'No token provided.' 
-    }); 
-  }
-});
+//     // if there is no token
+//     // return an error
+//     return res.status(403).send({ 
+//         success: false, 
+//         message: 'No token provided.' 
+//     }); 
+//   }
+// });
 
 // SAMPLE UPLOAD
 // router.get('/upload', function(req, res, next){

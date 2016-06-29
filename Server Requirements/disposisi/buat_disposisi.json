@@ -1,5 +1,5 @@
 {
-	"instruksi_kepada": "6F8A6B4C7C5C7C6C2C, 6F8A6B4C7ABCDEF6C2C, F86BC7C5C45781ADBFCE", <-- id pengguna yang dipisahkan dengan koma
+	"instruksi_kepada": "6F8A6B4C7C5C7C6C2C,6F8A6B4C7ABCDEF6C2C,F86BC7C5C45781ADBFCE", <-- id pengguna yang dipisahkan dengan koma
 	"isi_instruksi": "Lorem ipsum dolor sit amet",
 	"tanggal_instruksi": "2016-06-17" (yyyy-mm-dd) <-- kalo ini ngikutin aja sama yang di sistemnya, kalo salah ganti aja
 	"tanggal_penyelesaian": "2016-06-17" (yyyy-mm-dd) <-- kalo ini ngikutin aja sama yang di sistemnya, kalo salah ganti aja
