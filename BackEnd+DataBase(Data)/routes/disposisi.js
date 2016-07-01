@@ -42,6 +42,7 @@ router.post('/make/:agenda_id', function(req, res) {
 	var status = "Sudah dibaca";
 	var instruksi_kepada = ids.split(",");
 	var arr=[];
+	var id =[];
 	for(var i = 0; i<instruksi_kepada.length;i++){
 		instruksi_kepada[i]= new ObjectID(instruksi_kepada[i]);
 		{
@@ -49,7 +50,9 @@ router.post('/make/:agenda_id', function(req, res) {
 				"instruksi_kepada" : instruksi_kepada[i],
 				"status" : "belum dibaca"
 			});
-			
+			id.push({
+				"_id" : instruksi_kepada[i]
+			});			
 		}
 	}
 	
@@ -57,7 +60,7 @@ router.post('/make/:agenda_id', function(req, res) {
 	collection.update(
 	{"_id": req.params.agenda_id},
 	{$set: {
-		"status" : status;
+		"status" : status,
 		"disposisi" :
 		{
 			"instruksi_kepada" : arr,
@@ -76,17 +79,97 @@ router.post('/make/:agenda_id', function(req, res) {
 			});
 		}
 		else {
-			res.json({
-			  "results": {
-			    "success": doc,
-			    "message": "Data {nama collection} - {deskripsi collection, misalnya nama jabatan} berhasil ditambahkan"
-			  }
+			collection = db.get('pengguna');
+			collection.update(
+			{$or: id},
+			{$push: {"id_disposisi_masuk" : new ObjectID(req.params.agenda_id)}},
+			{multi: true},
+			function(err, doc){
+			if (err) {
+				res.json({
+				  	"results": {
+				    "success": false,
+				    "message": "Gagal menambahkan data disposisi, user tidak ditemukan"
+				  	}
+				});
+			}
+			else {
+				res.json({
+				  "results": {
+				    "success": doc,
+				    "message": "Data {nama collection} - {deskripsi collection, misalnya nama jabatan} berhasil ditambahkan"
+				  }
+				});
+			}
 			});
 		}
 	});
 });
 
+//UBAH STATUS
+router.post('/read', function(req,res){
+	var agenda_id = req.body.agenda_id;
+	var id_user = req.body.id_user;
+	var db = req.db;
+	var collection = db.get("agenda");
 
+	collection.find({
+	"_id" : agenda_id,
+    "disposisi.instruksi_kepada.instruksi_kepada" : id_user},
+    function(err,docs){
+    	if (err){
+    		res.json({
+				"results": {
+	    			"success": false,
+	    			"message": "Data Agenda tidak ditemukan"
+  				}
+			});
+    	}
+    	else {
+    		collection.update({
+		    "_id" : agenda_id,"disposisi.instruksi_kepada.instruksi_kepada" : id_user},
+		    {"$set":{"disposisi.instruksi_kepada.$.status":"sudah dibaca"}})
+    	}
+    });
+
+    collection.find({
+	"_id" : agenda_id,
+    "disposisi.diteruskan_kepada.diteruskan_kepada" : id_user},
+    function(err,docs){
+    	if (err){
+    		res.json({
+				"results": {
+	    			"success": false,
+	    			"message": "Data Agenda tidak ditemukan"
+  				}
+			});
+    	}
+    	else {
+    		collection.update({
+		    "_id" : agenda_id,"disposisi.diteruskan_kepada.diteruskan_kepada" : id_user},
+		    {"$set":{"disposisi.diteruskan_kepada.$.status":"sudah dibaca"}})
+    	}
+    });
+
+    collection.find({
+	"_id" : agenda_id,
+    "disposisi.instruksi_tambahan.diteruskan_kepada" : id_user},
+    function(err,docs){
+    	if (err){
+    		res.json({
+				"results": {
+	    			"success": false,
+	    			"message": "Data Agenda tidak ditemukan"
+  				}
+			});
+    	}
+    	else {
+    		collection.update({
+		    "_id" : agenda_id,"disposisi.instruksi_tambahan.diteruskan_kepada" : id_user},
+		    {"$set":{"disposisi.instruksi_tambahan.$.status":"sudah dibaca"}})
+    	}
+    });
+});
 
 //insert disposisi by sesdin
 router.post('/forward/:agenda_id', function(req, res) {
@@ -96,6 +179,7 @@ router.post('/forward/:agenda_id', function(req, res) {
 	var tanggal_disposisi = new Date();
 	var diteruskan_kepada = ids.split(",");
 	var arr=[];
+	var id=[];
 	for(var i = 0; i<diteruskan_kepada.length;i++){
 		diteruskan_kepada[i]= new ObjectID(diteruskan_kepada[i]);
 		{
@@ -103,6 +187,9 @@ router.post('/forward/:agenda_id', function(req, res) {
 				"diteruskan_kepada" : diteruskan_kepada[i],
 				"status" : "belum dibaca"
 			});
+			id.push({
+				"_id" : diteruskan_kepada[i]
+			});	
 		}
 	}
 	var collection = db.get('agenda');
@@ -123,11 +210,28 @@ router.post('/forward/:agenda_id', function(req, res) {
 			});
 		}
 		else {
-			res.json({
-			  "results": {
-			    "success": doc,
-			    "message": "Data {nama collection} - {deskripsi collection, misalnya nama jabatan} berhasil ditambahkan"
-			  }
+			collection = db.get('pengguna');
+			collection.update(
+			{$or: id},
+			{$push: {"id_disposisi_masuk" : new ObjectID(req.params.agenda_id)}},
+			{multi: true},
+			function(err, doc){
+			if (err) {
+				res.json({
+				  	"results": {
+				    "success": false,
+				    "message": "Gagal menambahkan data disposisi, user tidak ditemukan"
+				  	}
+				});
+			}
+			else {
+				res.json({
+				  "results": {
+				    "success": doc,
+				    "message": "Data {nama collection} - {deskripsi collection, misalnya nama jabatan} berhasil ditambahkan"
+				  }
+				});
+			}
 			});
 		}
 	});
@@ -140,24 +244,25 @@ router.post('/forwardplus/:agenda_id', function(req, res) {
 	var isi_disposisi = req.body.isi_disposisi; 
 	var diteruskan_kepada = ids.split(",");
 	var arr=[];
+	var id=[];
 	for(var i = 0; i<diteruskan_kepada.length;i++){
 		diteruskan_kepada[i]= new ObjectID(diteruskan_kepada[i]);
 		{
 			arr.push({
 				"diteruskan_kepada" : diteruskan_kepada[i],
+				"isi" : isi_disposisi,
 				"status" : "belum dibaca"
 			});
+			id.push({
+				"_id" : diteruskan_kepada[i]
+			});	
 		}
 	}
 	var collection = db.get('agenda');
 	collection.update(
 	{"_id": req.params.agenda_id},
-	{$push:{
-		"disposisi.instruksi_tambahan" : 
-			{
-				"id_user" : arr,
-				"isi" : isi_disposisi
-			}
+	{$set:{
+		"disposisi.instruksi_tambahan" : arr
 		}
 	}
 	, function (err, doc) {
@@ -170,11 +275,28 @@ router.post('/forwardplus/:agenda_id', function(req, res) {
 			});
 		}
 		else {
-			res.json({
-			  "results": {
-			    "success": doc,
-			    "message": "Data {nama collection} - {deskripsi collection, misalnya nama jabatan} berhasil ditambahkan"
-			  }
+			collection = db.get('pengguna');
+			collection.update(
+			{$or: id},
+			{$push: {"id_disposisi_masuk" : new ObjectID(req.params.agenda_id)}},
+			{multi: true},
+			function(err, doc){
+			if (err) {
+				res.json({
+				  	"results": {
+				    "success": false,
+				    "message": "Gagal menambahkan data disposisi, user tidak ditemukan"
+				  	}
+				});
+			}
+			else {
+				res.json({
+				  "results": {
+				    "success": doc,
+				    "message": "Data {nama collection} - {deskripsi collection, misalnya nama jabatan} berhasil ditambahkan"
+				  }
+				});
+			}
 			});
 		}
 	});
