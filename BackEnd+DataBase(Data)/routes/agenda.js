@@ -11,7 +11,7 @@ var fs = require('fs');
 router.get('/', function(req, res, next) {
   	var db = req.db;
   	var collection = db.get('agenda');
-  	collection.find({"is_delete" : "0"},{},function(err,docs){
+  	collection.find({"is_delete" : "0"},{sort: {updatedAt:1}},function(err,docs){
   		if (err) {
 			res.json({
 				"results": {
@@ -78,6 +78,8 @@ router.post('/', function(req, res) {
 			"jenis_surat" : jenis_surat,
 			"lampiran" : lampiran,
 			"status" : status,
+			"createdAt": new Date(),
+			"updatedAt": new Date(),
 			"is_delete" : is_delete
 			}, function (err, doc) {
 				if (err) {
@@ -113,20 +115,22 @@ router.get('/:agenda_id', function(req, res, next) {
   				}
 			});
 		}
-		else if(docs.is_delete == "1"){
-			res.json({
-		 	 	"results": {
-					"success": false
-				}
-			});
-		}
 		else {
-			res.json({
-		 	 	"results": {
-					"success": true,
-					"data": docs
-		  		}
-			});
+			if(docs.is_delete == "1"){
+				res.json({
+			 	 	"results": {
+						"success": false
+					}
+				});
+			}
+			else {
+				res.json({
+			 	 	"results": {
+						"success": true,
+						"data": docs
+			  		}
+				});
+			}
 		}
   	});  
 });
@@ -194,6 +198,7 @@ router.put('/:agenda_id', function(req, res, next) {
 				"jenis_surat" : jenis_surat,
 				"lampiran" : lampiran,
 				"status" : status,
+				"updatedAt": new Date(),
 				"is_delete" : is_delete
 			}, function (err, doc) {
 				if (err) {

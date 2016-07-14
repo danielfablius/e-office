@@ -1,4 +1,5 @@
 var express = require('express');
+var ObjectID = require('mongodb').ObjectID;
 var router = express.Router();
 
 /* GET jabatan listing. */
@@ -6,7 +7,7 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   	var db = req.db;
     var collection = db.get('jabatan');
-  	collection.find({}, {sort: {level_jabatan: 1}}, function(err, docs){
+  	collection.find({"is_delete":"0"}, {sort: {level_jabatan: 1, parent_id:1}}, function(err, docs){
     if (err) {
 			res.json({
 				"results": {
@@ -35,9 +36,12 @@ router.post('/', function(req, res) {
 	var collection = db.get('jabatan');
 	
 	collection.insert({
-		"level_jabatan" : level_jabatan,
+		"level_jabatan" : parseInt(level_jabatan),
 		"nama_jabatan" : nama_jabatan,
-		"parent_id" : parent_id
+		"parent_id" : new ObjectID(parent_id),
+		"createdAt": new Date(),
+		"updatedAt": new Date(),
+		"is_delete": "0"
 	}, function (err, doc) {
 		if (err) {
 			res.json({
@@ -89,15 +93,18 @@ router.put('/:jabatan_id', function(req, res, next) {
 
 	var level_jabatan = req.body.level_jabatan;
 	var nama_jabatan = req.body.nama_jabatan;
-	var parent_id = req.body.parent_id;
+	var parent_id = new ObjectID(req.body.parent_id);
 
 	var collection = db.get('jabatan');
 	
-	collection.update(req.params.jabatan_id, {
-		"level_jabatan" : level_jabatan,
-		"nama_jabatan" : nama_jabatan,
-		"parent_id" : parent_id
-	}, function (err, doc) {
+	collection.update(req.params.jabatan_id, 
+		{$set: {
+			"level_jabatan" : parseInt(level_jabatan),
+			"nama_jabatan" : nama_jabatan,
+			"parent_id" : parent_id,
+			"updatedAt": new Date(),
+		}}
+	, function (err, doc) {
 		if (err) {
 			res.json({
 			  "results": {

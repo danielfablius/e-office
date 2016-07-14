@@ -1,3 +1,4 @@
+var ObjectID = require('mongodb').ObjectID;
 var express = require('express');
 var jwt    = require('jsonwebtoken');
 var crypto = require('crypto');
@@ -13,6 +14,95 @@ var app = express();
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
+});
+
+getPengguna = function(req, res, id_user, level_jabatan) {
+  var db = req.db;
+  var collection = db.get('pengguna');
+
+  resTree = function(parent_id, level) {
+    if (typeof(parent_id) != 'undefined') {
+      level = parseInt(level) + 1;
+      console.log(level);
+      $criteria = { 
+        "is_delete" : "0" , 
+        "$or": [
+          {"detail_jabatan.level_jabatan" : {"$gt": level}},
+          {"detail_jabatan.parent_id": new ObjectID(parent_id)}
+        ]
+      };
+    } else {
+      $criteria = { "is_delete" : "0" };
+    }
+    searchQuery = [{ "$lookup" :
+      {
+        "from" :"jabatan",
+        "localField" : "id_jabatan",
+        "foreignField" : "_id",
+        "as" : "detail_jabatan"
+      }},
+      {
+          "$unwind": '$detail_jabatan'
+      },
+      { "$project": {
+          "nama": 1,
+          "id_jabatan":1,
+          "detail_jabatan": 1,
+          "is_delete": 1,
+          "jabatan": "$detail_jabatan.nama_jabatan"
+      }},
+      { "$match" : $criteria
+      },
+      { "$sort" : {
+        "detail_jabatan.level_jabatan": 1,
+        "detail_jabatan.parent_id": 1,
+        "detail_jabatan._id": 1
+      }
+    }];
+    console.log(searchQuery);
+    collection.col.aggregate(searchQuery, function(err, docs) {
+      if (err) {
+        res.json({
+          "result":{
+            "success": false,
+            "message": "data pengguna tidak ditemukan"
+          }
+        });
+      }
+      else{
+        res.json({
+          "results": docs
+        });
+      }
+    });
+  }
+  if (typeof(id_user) != 'undefined') {
+      collection.findById(id_user, function(err,docs){
+        if (err) {
+          res.json({
+            "results": {
+                "success": false,
+                "message": "Data jabatan dengan ObjectID" + id_user +"  tidak ditemukan"
+              }
+          });
+        }
+        else {
+          id_jabatan = docs.id_jabatan;
+          resTree(id_jabatan, level_jabatan);
+        }
+      });
+    } else {
+      resTree();
+    }
+    
+}
+
+router.get('/pengguna_tree/:id_user/:level_jabatan', function(req, res, next){
+  getPengguna(req, res, req.params.id_user, req.params.level_jabatan);
+});
+
+router.get("/pengguna_all", function(req, res, next){
+  getPengguna(req, res);
 });
 
 router.get('/restore', function(req, res, next) {
@@ -39,152 +129,90 @@ router.get('/restore', function(req, res, next) {
     });  
 });
 
-// router.post('/login', function(req, res) {
-//   var db = req.db;
-//   var collection = db.get('pengguna');
-//   var username = req.body.username;  
-//   collection.findOne({"username" : username},function(err,docs){
-//     if (err) {
+router.post('/login', function(req, res) {
+  var db = req.db;
+  var collection = db.get('pengguna');
+  var username = req.body.username;  
+  collection.findOne({"username" : username},function(err,docs){
+    if (err) {
         
-//         res.json({
-//           "results": {
-//             "success": false,
-//             "message": "Kombinasi username dan password salah"
-//           }
-//         });
-//       }
-//       if (!docs) {
-//         console.log(docs);
-//         res.json({
-//           "results": {
-//               "success": false,
-//               "message": "Kombinasi username dan password salah"
-//             }
-//         });
-//       } 
-//       else if (docs) {
-//       // check if password matches
-//       var hash = crypto.createHash('md5').update(req.body.password).digest('hex');
-//       if (docs.password != hash) {
-//         res.json({
-//           "results": {
-//               "success": false,
-//               "message": "Kombinasi username dan password salah"
-//             }
-//         });
-//       } else {
-//           var iduser = docs._id;
-//           var nama = docs.nama;
-//           var id_jabatan= docs.id_jabatan;
-//           var token = jwt.sign(docs, key, {
-//             expiresIn: 1440 // expires in 24 hours
-//           });
-//           console.log(docs);
-//           collection=db.get('jabatan');
-//           collection.find({"_id": id_jabatan},function(err,doc){
-//             console.log(doc);
-//             res.json({
-//             "results": {
-//               "success": true,
-//               "user_id": iduser,
-//               "nama" : nama,
-//               "nama_jabatan" : doc[0].nama_jabatan,
-//               "level_jabatan": doc[0].level_jabatan,
-//               "token": token,
-//               "message": "Login berhasil"}
-//             });
-//           });
-//         }
-//       }
-//   });
-// });
+        res.json({
+          "results": {
+            "success": false,
+            "message": "Kombinasi username dan password salah"
+          }
+        });
+      }
+      if (!docs) {
+        res.json({
+          "results": {
+              "success": false,
+              "message": "Kombinasi username dan password salah"
+            }
+        });
+      } 
+      else if (docs) {
+      // check if password matches
+      var hash = crypto.createHash('md5').update(req.body.password).digest('hex');
+      if (docs.password != hash) {
+        res.json({
+          "results": {
+              "success": false,
+              "message": "Kombinasi username dan password salah"
+            }
+        });
+      } else {
+          var iduser = docs._id;
+          var nama = docs.nama;
+          var id_jabatan= docs.id_jabatan;
+          var token = jwt.sign(docs, key, {
+            expiresIn: 999999 // expires in 24 hours
+          });
+          collection=db.get('jabatan');
+          collection.find({"_id": id_jabatan},function(err,doc){
+            res.json({
+            "results": {
+              "success": true,
+              "user_id": iduser,
+              "nama" : nama,
+              "nama_jabatan" : doc[0].nama_jabatan,
+              "level_jabatan": doc[0].level_jabatan,
+              "token": token,
+              "message": "Login berhasil"}
+            });
+          });
+        }
+      }
+  });
+});
 
-// router.use(function(req, res, next) {
+router.use(function(req, res, next) {
 
-//   // check header or url parameters or post parameters for token
-//   var token = req.body.token || req.query.token || req.headers['x-access-token'];
+  // check header or url parameters or post parameters for token
+  var token = req.body.token || req.query.token || req.headers['x-access-token'];
 
-//   // decode token
-//   if (token) {
+  // decode token
+  if (token) {
 
-//     // verifies secret and checks exp
-//     jwt.verify(token, key, function(err, decoded) {      
-//       if (err) {
-//         return res.json({ success: false, message: 'Failed to authenticate token.' });    
-//       } else {
-//         // if everything is good, save to request for use in other routes
-//         req.decoded = decoded;    
-//         next();
-//       }
-//     });
-//   } else {
+    // verifies secret and checks exp
+    jwt.verify(token, key, function(err, decoded) {      
+      if (err) {
+        return res.json({ success: false, message: 'Failed to authenticate token.' });    
+      } else {
+        // if everything is good, save to request for use in other routes
+        req.decoded = decoded;    
+        next();
+      }
+    });
+  } else {
 
-//     // if there is no token
-//     // return an error
-//     return res.status(403).send({ 
-//         success: false, 
-//         message: 'No token provided.' 
-//     }); 
-//   }
-// });
-
-// SAMPLE UPLOAD
-// router.get('/upload', function(req, res, next){
-//   res.render('index');
-// });
-
-// var uploadProfileImgs = multer({dest: '../uploads/'}).single('upl');
-// var storage = multer.diskStorage({
-//   destination: '../uploads/',
-//   filename: function (req, file, cb) {
-//     crypto.pseudoRandomBytes(16, function (err, raw) {
-//       if (err) return cb(err)
-
-//       cb(null, raw.toString('hex') + path.extname(file.originalname))
-//     })
-//   }
-//   });
-// var upload = multer({ storage: storage }).single('upl');
-
-// router. post('/upload', function(req, res){
-//   var db = req.db;
-//   var collection = db.get('test');
-//   var nama = req.body.nama;
-//   upload(req, res, function(err){
-//     if(err){
-//       console.log(err.message);
-//       return
-//     }
-//     console.log(req.body);
-//     console.log(req.file);
-//     // var paths = req.file.path;
-//     // var originalname = req.file.originalname;
-//     // var result = originalname.split(".");
-//     // var path = paths+'.'+result[1];
-//     // console.log(result[0]);
-//     // console.log(result[1]);
-//     collection.insert({
-//       "nama" : nama,
-//       "path" : req.file.path
-//     }, function(err, docs){
-//         if (err) {
-//           res.json({
-//             "results": {
-//               "success": false,
-//               "message": "Gagal menambahkan data agenda,"+ err
-//             }
-//           });
-//         }
-//         else {
-//           res.json({
-//             "results": {
-//               "success": true,
-//               "message": "Data agenda berhasil ditambahkan"
-//             }
-//           });
-//         }
-//     });
-//   });
-// });
+    // if there is no token
+    // return an error
+    return res.status(403).send({ 
+        success: false, 
+        message: 'No token provided.' 
+    }); 
+  }
+});
 
 module.exports = router;

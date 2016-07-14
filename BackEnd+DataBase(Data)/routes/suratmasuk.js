@@ -9,7 +9,7 @@ router.get('/', function(req, res, next) {
   	collection.find({
   		"is_delete" : "0",
   		"status" : "Belum dibaca"
-  	},{},function(err,docs){
+  	},{sort: {updatedAt: -1}},function(err,docs){
   		if (err) {
 			res.json({
 				"results": {

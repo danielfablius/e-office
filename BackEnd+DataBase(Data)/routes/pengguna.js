@@ -14,7 +14,13 @@ router.get('/', function(req, res, next) {
 				"localField" : "id_jabatan",
 				"foreignField" : "_id",
 				"as" : "detail_jabatan"
-			}}
+			}},
+		{
+			"$sort": {
+				"updatedAt": -1,
+				"detail_jabatan.level_jabatan": 1
+			}
+		}
 	], function(err, docs) {
 	if (err) {
 		res.json({
@@ -101,6 +107,8 @@ router.post('/', function(req, res){
 		"id_jabatan" : new ObjectID(id_jabatan),
 		"no_telp"	: no_telp,
 		"email"		: email,
+		"createdAt": new Date(),
+		"updatedAt": new Date(),
 		"is_delete"	: is_delete,
 		"id_disposisi_masuk" : [""],
 		"id_disposisi_keluar" : [""]
@@ -145,7 +153,8 @@ router.put('/:pengguna_id', function(req, res){
 		"nama"		: nama,
 		"id_jabatan" : new ObjectID(id_jabatan),
 		"no_telp"	: no_telp,
-		"email"		: email
+		"email"		: email,
+		"updatedAt": new Date(),
 	};
 	if(password == ""){
 		delete updatedArray.password;
