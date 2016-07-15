@@ -23,7 +23,9 @@ getPengguna = function(req, res, id_user, level_jabatan) {
   resTree = function(parent_id, level) {
     if (typeof(parent_id) != 'undefined') {
       level = parseInt(level) + 1;
-      console.log(level);
+      if (level > 4) {
+        level = 4;
+      }
       $criteria = { 
         "is_delete" : "0" , 
         "$or": [
@@ -49,6 +51,7 @@ getPengguna = function(req, res, id_user, level_jabatan) {
           "id_jabatan":1,
           "detail_jabatan": 1,
           "is_delete": 1,
+          "list_anggota": 1,
           "jabatan": "$detail_jabatan.nama_jabatan"
       }},
       { "$match" : $criteria
@@ -59,7 +62,6 @@ getPengguna = function(req, res, id_user, level_jabatan) {
         "detail_jabatan._id": 1
       }
     }];
-    console.log(searchQuery);
     collection.col.aggregate(searchQuery, function(err, docs) {
       if (err) {
         res.json({
@@ -70,6 +72,18 @@ getPengguna = function(req, res, id_user, level_jabatan) {
         });
       }
       else{
+        if (typeof(parent_id) != 'undefined') {
+          whiteList = [parent_id.toString()];
+          for(i=0;i<docs.length;i++) {
+            if (whiteList.indexOf(docs[i].detail_jabatan.parent_id.toString()) > -1) {
+              whiteList.push(docs[i].detail_jabatan._id.toString());
+            } else {
+              // delete docs[i];
+              docs.splice(i,1);
+            }
+          }
+        }
+        
         res.json({
           "results": docs
         });

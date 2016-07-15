@@ -18,18 +18,18 @@ router.get('/masuk/:user_id', function(req, res, next) {
 		}
 		else {
 			var iddisposisi = docs[0].id_disposisi_masuk; 
-			// console.log(iddisposisi);
+			
+			var statusDisposisi = {};
 			var id = [];
 			for(var i = 0; i<iddisposisi.length;i++){
+				statusDisposisi[iddisposisi[i].id_disposisi_masuk] = iddisposisi[i].status;
 				iddisposisi[i]= new ObjectID(iddisposisi[i].id_disposisi_masuk);
 				{
-					id.unshift({
-						"_id" : iddisposisi[i]
-					});			
+					id.push(iddisposisi[i]);			
 				}
-			}		
+			}
 			collection = db.get('agenda');
-			collection.find({"$or": id}, function(err, doc){
+			collection.find({"_id": {"$in": id}}, function(err, doc){
 				if (err) {
 					res.json({
 						"results": {
@@ -39,8 +39,14 @@ router.get('/masuk/:user_id', function(req, res, next) {
 					});
 				}
 				else {
+					newDoc = [];
+
+					for(i=doc.length-1;i>=0;i--) {
+						doc[i]['status_disposisi'] = statusDisposisi[doc[i]._id];
+						newDoc.push(doc[i]);
+					}
 					res.json({
-				 	 	"results": doc
+				 	 	"results": newDoc
 					});
 				}		
 			});
@@ -221,6 +227,7 @@ router.post('/forward/:agenda_id', function(req, res) {
 	collection.update(
 	{"_id": req.params.agenda_id},
 	{$set: {
+		"status" : "sudah dibaca",
 		"disposisi.diteruskan_kepada" : arr,
 		"disposisi.isi_disposisi" : isi_disposisi,
 		"disposisi.tanggal_disposisi" : tanggal_disposisi
@@ -405,6 +412,16 @@ router.post('/read', function(req,res){
 		collection.update({
 	    "_id" : agenda_id,"disposisi.diteruskan_kepada.diteruskan_kepada" :  new ObjectID(id_user)},
 	    {"$set":{"disposisi.diteruskan_kepada.$.status":"sudah dibaca"}});
+    });
+
+    var col_pengguna = db.get('pengguna');
+    col_pengguna.find({
+	"_id" : id_user,
+    "id_disposisi_masuk.id_disposisi_masuk" :  new ObjectID(agenda_id)},
+    function(err,docs){
+		col_pengguna.update({
+	    "_id" : id_user	,"id_disposisi_masuk.id_disposisi_masuk" :  new ObjectID(agenda_id)},
+	    {"$set":{"id_disposisi_masuk.$.status":"sudah dibaca"}});
     });
 
     collection.find({
